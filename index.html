@@ -3,158 +3,76 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Stone & Sage Wedding Ops Hub</title>
+<title>Wedding Ops Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #f7f4ee;
-  --panel: rgba(255,255,255,0.72);
-  --panel-strong: rgba(255,255,255,0.88);
+  --panel: rgba(255,255,255,0.75);
   --text: #2f2d29;
   --muted: #6f6b63;
   --sage: #8aa38d;
-  --sage-deep: #6f8b73;
-  --champagne: #d8c7a1;
   --line: rgba(111,139,115,0.18);
-  --shadow: 0 10px 30px rgba(80, 90, 80, 0.08);
 }
-*{box-sizing:border-box}
 body {
   margin:0;
   font-family:'Inter',sans-serif;
   color:var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(138,163,141,0.18), transparent 40%),
-    radial-gradient(circle at top right, rgba(216,199,161,0.20), transparent 35%),
-    linear-gradient(180deg, #faf8f4 0%, #f4f1ea 100%);
+  background: linear-gradient(180deg,#faf8f4,#f1ede6);
 }
 .header {
-  padding: 28px 32px;
+  padding:24px;
   border-bottom:1px solid var(--line);
-  position:sticky; top:0;
-  backdrop-filter: blur(10px);
-  background: rgba(247,244,238,0.8);
-  z-index:10;
 }
 .header h1 {
   margin:0;
   font-family:'Cormorant Garamond',serif;
-  font-size:42px;
-  font-weight:600;
+  font-size:36px;
 }
-.header p { margin:6px 0 0; color:var(--muted); }
-.nav {
-  display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;
-}
-.tab {
-  padding:10px 16px; border-radius:999px; border:1px solid var(--line);
-  background: rgba(255,255,255,0.6); cursor:pointer; font-size:14px;
-}
-.tab.active { background: linear-gradient(135deg, #8aa38d, #a9c0ab); color:white; border:none; }
-.main { padding:32px; max-width:1400px; margin:0 auto; }
-.grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:20px; }
+.nav { display:flex; gap:10px; margin-top:12px; }
+.tab { padding:8px 14px; border-radius:20px; background:#eee; cursor:pointer; }
+.tab.active { background:var(--sage); color:#fff; }
+.main { padding:24px; }
 .card {
-  background: var(--panel);
-  backdrop-filter: blur(8px);
-  border:1px solid rgba(255,255,255,0.7);
-  border-radius:24px;
-  box-shadow: var(--shadow);
-  padding:24px;
+  background:var(--panel);
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
 }
-.card h2, .card h3 {
-  margin:0 0 14px;
-  font-family:'Cormorant Garamond',serif;
-}
-.span-4{grid-column:span 4}
-.span-6{grid-column:span 6}
-.span-8{grid-column:span 8}
-.span-12{grid-column:span 12}
-.kpi { font-size:34px; font-weight:700; margin-top:10px; }
-.list { display:grid; gap:12px; }
-.item {
-  padding:14px 16px; border-radius:18px;
-  background: var(--panel-strong);
-  border:1px solid var(--line);
-}
-.small { color:var(--muted); font-size:13px; }
+h2 { font-family:'Cormorant Garamond',serif; }
 .hidden { display:none; }
-.table { width:100%; border-collapse: collapse; }
-.table th, .table td {
-  text-align:left; padding:12px 10px; border-bottom:1px solid var(--line); font-size:14px;
-}
-.badge {
-  display:inline-block; padding:6px 10px; border-radius:999px;
-  background: rgba(138,163,141,0.16); color: var(--sage-deep); font-size:12px; font-weight:600;
-}
-@media (max-width: 900px){
-  .span-4,.span-6,.span-8,.span-12{grid-column:span 12}
-  .header h1{font-size:34px}
-}
 </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Stone & Sage Wedding Ops Hub</h1>
-    <p>Luxury wedding coordination dashboard · logistics · transport · vendors · photo control</p>
-    <div class="nav" id="nav"></div>
-  </div>
 
-  <div class="main">
-    <section id="dashboard" class="page"></section>
-    <section id="timeline" class="page hidden"></section>
-    <section id="events" class="page hidden"></section>
-    <section id="people" class="page hidden"></section>
-    <section id="transport" class="page hidden"></section>
-    <section id="vendors" class="page hidden"></section>
-    <section id="photos" class="page hidden"></section>
-    <section id="print" class="page hidden"></section>
-  </div>
+<div class="header">
+  <h1>Wedding Ops Hub</h1>
+  <div class="nav" id="nav"></div>
+</div>
+
+<div class="main">
+  <section id="dashboard"></section>
+  <section id="groom" class="hidden"></section>
+  <section id="packing" class="hidden"></section>
+</div>
 
 <script>
-const data = {
-  events: [
-    { name:'Nikah', venue:'Main Venue', internal:'16:30', public:'18:00', groom:'Holding Suite', notes:'Family formals immediately after' },
-    { name:'Mehndi', venue:'Home / Hall', internal:'17:00', public:'19:00', groom:'Home', notes:'AV and food staggered arrival' },
-    { name:'Dua Night', venue:'Imambargha', internal:'18:00', public:'19:30', groom:'Prayer Hall Prep Room', notes:'MK guest car coordination critical' },
-    { name:'Reception', venue:'Reception Hall', internal:'15:00', public:'18:30', groom:'Hotel / Portrait Room', notes:'Full portraits + speeches + dinner service' }
-  ],
-  vendors: [
-    { type:'Food', coverage:'Reception, Dua Night, Mehndi', notes:'Stagger service windows' },
-    { type:'AV', coverage:'Nikah, Dua Night, Mehndi, Reception', notes:'Mic, screens, music, live feeds' },
-    { type:'Photographer', coverage:'Nikah family formals, Reception full coverage', notes:'Priority shot list synced to events' }
-  ],
-  people: [
-    { name:'Miqdad', role:'Groom', location:'Holding room / transport critical path' },
-    { name:'Immediate Family', role:'Guest flow + family coordination', location:'Multi-event' },
-    { name:'MK Guests', role:'Travel group', location:'Milton Keynes > London' }
-  ],
-  transport: [
-    { group:'MK Family Car 1', depart:'14:00', driver:'TBC', passengers:'4' },
-    { group:'MK Family Car 2', depart:'14:15', driver:'TBC', passengers:'4' }
-  ],
-  photos: [
-    'Nikah: Immediate family combinations',
-    'Reception: Couple portraits',
-    'Reception: Groom friends + lads shots',
-    'Dua Night: family candid moments'
-  ]
-};
-
 const tabs = [
-  ['dashboard','Dashboard'],['timeline','Master Timeline'],['events','Events'],['people','People'],
-  ['transport','Transport'],['vendors','Vendors'],['photos','Photo Lists'],['print','Print Pack']
+  ['dashboard','Dashboard'],
+  ['groom','Groom Timeline'],
+  ['packing','Packing Checklist']
 ];
 
 const nav = document.getElementById('nav');
-const pages = document.querySelectorAll('.page');
+const pages = document.querySelectorAll('section');
 
-tabs.forEach(([id,label], index)=>{
-  const btn = document.createElement('button');
-  btn.className = 'tab' + (index===0 ? ' active' : '');
-  btn.textContent = label;
-  btn.onclick = ()=>{
+tabs.forEach(([id,label],i)=>{
+  const btn=document.createElement('button');
+  btn.className='tab'+(i===0?' active':'');
+  btn.innerText=label;
+  btn.onclick=()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     pages.forEach(p=>p.classList.add('hidden'));
@@ -163,46 +81,72 @@ tabs.forEach(([id,label], index)=>{
   nav.appendChild(btn);
 });
 
-function renderDashboard(){
-  document.getElementById('dashboard').innerHTML = `
-    <div class="grid">
-      <div class="card span-4"><h2>Events</h2><div class="kpi">${data.events.length}</div></div>
-      <div class="card span-4"><h2>Vendors</h2><div class="kpi">${data.vendors.length}</div></div>
-      <div class="card span-4"><h2>Transport Groups</h2><div class="kpi">${data.transport.length}</div></div>
-      <div class="card span-8"><h2>Next Critical Timing</h2><div class="item">AV Setup · Nikah · 16:30</div></div>
-      <div class="card span-4"><h2>Groom Status</h2><div class="item">Holding Suite · Ready by 17:30</div></div>
-    </div>`;
-}
+// DASHBOARD
 
-function renderTimeline(){
-  document.getElementById('timeline').innerHTML = `<div class="card"><h2>Master Timeline</h2>${data.events.map(e=>`<div class="item"><strong>${e.name}</strong><br><span class="small">Internal ${e.internal} · Public ${e.public} · Groom ${e.groom}</span></div>`).join('')}</div>`;
-}
+document.getElementById('dashboard').innerHTML=`
+<div class="card">
+<h2>Next Critical</h2>
+<p>Nikah – Departure 3:00 PM</p>
+</div>
+`;
 
-function renderEvents(){
-  document.getElementById('events').innerHTML = `<div class="card"><h2>Event Breakdowns</h2>${data.events.map(e=>`<div class="item"><strong>${e.name}</strong><br>${e.venue}<br><span class="small">${e.notes}</span></div>`).join('')}</div>`;
-}
+// GROOM TIMELINE
 
-function renderPeople(){
-  document.getElementById('people').innerHTML = `<div class="card"><h2>Key People</h2>${data.people.map(p=>`<div class="item"><strong>${p.name}</strong> <span class="badge">${p.role}</span><br><span class="small">${p.location}</span></div>`).join('')}</div>`;
-}
+document.getElementById('groom').innerHTML=`
+<div class="card">
+<h2>Nikah Groom Timeline</h2>
 
-function renderTransport(){
-  document.getElementById('transport').innerHTML = `<div class="card"><h2>Transport Planner</h2><table class="table"><tr><th>Group</th><th>Depart</th><th>Driver</th><th>Passengers</th></tr>${data.transport.map(t=>`<tr><td>${t.group}</td><td>${t.depart}</td><td>${t.driver}</td><td>${t.passengers}</td></tr>`).join('')}</table></div>`;
-}
+<p><strong>9:00</strong> Wake up</p>
+<p><strong>9:30–10:30</strong> Shower + prep</p>
+<p><strong>10:30–11:30</strong> Setup + checks</p>
+<p><strong>12:00</strong> Start dressing</p>
+<p><strong>1:15–1:45</strong> Buffer</p>
+<p><strong>1:45–2:15</strong> Photos</p>
+<p><strong>2:15–2:40</strong> Send-off</p>
+<p><strong>2:40–3:00</strong> Final checks</p>
+<p><strong>3:00</strong> DEPART</p>
+<p><strong>4:00–4:30</strong> First look</p>
+<p><strong>4:45</strong> Arrival buffer</p>
 
-function renderVendors(){
-  document.getElementById('vendors').innerHTML = `<div class="card"><h2>Vendor Operations</h2>${data.vendors.map(v=>`<div class="item"><strong>${v.type}</strong><br>${v.coverage}<br><span class="small">${v.notes}</span></div>`).join('')}</div>`;
-}
+</div>
+`;
 
-function renderPhotos(){
-  document.getElementById('photos').innerHTML = `<div class="card"><h2>Photo Lists</h2>${data.photos.map(p=>`<div class="item">${p}</div>`).join('')}</div>`;
-}
+// PACKING
 
-function renderPrint(){
-  document.getElementById('print').innerHTML = `<div class="card"><h2>Print Pack</h2><div class="list"><div class="item">Master timeline printable</div><div class="item">Vendor sheet printable</div><div class="item">Photo list printable</div></div></div>`;
-}
+document.getElementById('packing').innerHTML=`
+<div class="card">
+<h2>Packing Checklist</h2>
 
-renderDashboard(); renderTimeline(); renderEvents(); renderPeople(); renderTransport(); renderVendors(); renderPhotos(); renderPrint();
+<h3>Outfits</h3>
+<ul>
+<li>Nikah outfit</li>
+<li>Reception outfit</li>
+<li>Casual clothes</li>
+<li>Nightwear</li>
+<li>Return outfit</li>
+</ul>
+
+<h3>Accessories</h3>
+<ul>
+<li>Watch</li>
+<li>Cufflinks</li>
+<li>Perfume</li>
+<li>Tie / bow</li>
+</ul>
+
+<h3>Essentials</h3>
+<ul>
+<li>Phone charger</li>
+<li>Portable charger</li>
+<li>Mints</li>
+<li>Comb</li>
+<li>Deodorant</li>
+</ul>
+
+</div>
+`;
+
 </script>
+
 </body>
 </html>
