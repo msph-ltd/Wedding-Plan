@@ -1,694 +1,2000 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Miqdad & Hanna Wedding Ops Hub</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>M & H · Wedding Ops Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   ROOT / TOKENS
+   ============================================================ */
 :root {
-  --bg: #f7f4ee;
-  --panel: rgba(255,255,255,0.72);
-  --panel-strong: rgba(255,255,255,0.88);
-  --text: #2f2d29;
-  --muted: #6f6b63;
-  --sage: #8aa38d;
-  --sage-deep: #6f8b73;
-  --champagne: #d8c7a1;
-  --line: rgba(111,139,115,0.18);
-  --shadow: 0 10px 30px rgba(80, 90, 80, 0.08);
-  --danger: #b8786b;
-  --warning: #c19b5d;
+  --bg:          #f7f4ee;
+  --bg2:         #f0ece3;
+  --panel:       rgba(255,255,255,0.72);
+  --panel-solid: rgba(255,255,255,0.92);
+  --text:        #2a2825;
+  --muted:       #6b6760;
+  --sage:        #8aa38d;
+  --sage-deep:   #6b8a6f;
+  --sage-pale:   rgba(138,163,141,0.12);
+  --champagne:   #d8c7a1;
+  --champ-pale:  rgba(216,199,161,0.18);
+  --line:        rgba(138,163,141,0.18);
+  --line-hard:   rgba(138,163,141,0.30);
+  --shadow-soft: 0 4px 24px rgba(60,70,60,0.07);
+  --shadow-card: 0 8px 32px rgba(60,70,60,0.09);
+  --radius-sm:   12px;
+  --radius-md:   20px;
+  --radius-lg:   28px;
+  --danger:      #b5766a;
+  --warning:     #c09856;
+  --success:     #6b8a6f;
+  --info:        #7a9bb5;
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
 body {
-  margin: 0;
   font-family: 'Inter', sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(138,163,141,0.18), transparent 40%),
-    radial-gradient(circle at top right, rgba(216,199,161,0.20), transparent 35%),
-    linear-gradient(180deg, #faf8f4 0%, #f4f1ea 100%);
+    radial-gradient(ellipse at 0% 0%, rgba(138,163,141,0.16) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(216,199,161,0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(216,199,161,0.10) 0%, transparent 40%),
+    linear-gradient(160deg, #faf8f3 0%, #f4f0e8 60%, #ede9df 100%);
+  min-height: 100vh;
 }
+
+/* ============================================================
+   HEADER / NAV
+   ============================================================ */
 .header {
-  padding: 28px 32px;
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(247,244,238,0.88);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
   border-bottom: 1px solid var(--line);
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(10px);
-  background: rgba(247,244,238,0.82);
-  z-index: 20;
+  padding: 20px 32px 0;
+}
+.header-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 .header h1 {
-  margin: 0;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 1;
 }
-.header p {
-  margin: 6px 0 0;
+.header h1 em { font-style: italic; color: var(--sage-deep); }
+.header-sub {
+  font-size: 12px;
   color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .nav {
   display: flex;
-  gap: 10px;
+  gap: 4px;
   flex-wrap: wrap;
-  margin-top: 18px;
+  margin-top: 16px;
+  padding-bottom: 1px;
 }
 .tab {
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.6);
+  padding: 9px 18px;
+  border-radius: 999px 999px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
   cursor: pointer;
-  font-size: 14px;
-  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  transition: all 0.18s ease;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
 }
+.tab:hover { color: var(--text); background: rgba(138,163,141,0.08); }
 .tab.active {
-  background: linear-gradient(135deg, #8aa38d, #a9c0ab);
-  color: white;
-  border: none;
+  background: var(--bg);
+  color: var(--sage-deep);
+  border-color: var(--line);
+  font-weight: 600;
 }
-.main {
-  padding: 32px;
-  max-width: 1440px;
-  margin: 0 auto;
+.tab.groom-tab {
+  color: #888;
+  margin-left: 8px;
+  border-left: 1px solid var(--line-hard);
+  padding-left: 18px;
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 20px;
-}
+.tab.groom-tab:hover { color: #c0392b; }
+.tab.groom-tab.active { color: #e74c3c; background: #111; border-color: #333; }
+
+/* ============================================================
+   MAIN / PAGES
+   ============================================================ */
+.main { padding: 32px; max-width: 1440px; margin: 0 auto; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ============================================================
+   GRID
+   ============================================================ */
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+.col-3  { grid-column: span 3; }
+.col-4  { grid-column: span 4; }
+.col-5  { grid-column: span 5; }
+.col-6  { grid-column: span 6; }
+.col-7  { grid-column: span 7; }
+.col-8  { grid-column: span 8; }
+.col-9  { grid-column: span 9; }
+.col-12 { grid-column: span 12; }
+
+/* ============================================================
+   CARD
+   ============================================================ */
 .card {
   background: var(--panel);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-  padding: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
 }
-.card h2, .card h3, .card h4 {
-  margin: 0 0 14px;
-  font-family: 'Cormorant Garamond', serif;
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 60%);
+  pointer-events: none;
 }
-.card h2 { font-size: 30px; }
-.card h3 { font-size: 24px; }
-.card h4 { font-size: 20px; }
-.span-3 { grid-column: span 3; }
-.span-4 { grid-column: span 4; }
-.span-5 { grid-column: span 5; }
-.span-6 { grid-column: span 6; }
-.span-7 { grid-column: span 7; }
-.span-8 { grid-column: span 8; }
-.span-9 { grid-column: span 9; }
-.span-12 { grid-column: span 12; }
-.kpi {
-  font-size: 34px;
-  font-weight: 700;
-  margin-top: 10px;
-}
-.small { color: var(--muted); font-size: 13px; }
+.card-sm { padding: 20px; border-radius: var(--radius-md); }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.serif { font-family: 'Cormorant Garamond', serif; }
+h2.card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; margin-bottom: 18px; line-height: 1.1; }
+h3.section-head { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; margin-bottom: 14px; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .muted { color: var(--muted); }
-.list { display: grid; gap: 12px; }
-.item {
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: var(--panel-strong);
-  border: 1px solid var(--line);
-}
-.item strong { display: inline-block; margin-bottom: 4px; }
-.hidden { display: none; }
-.table { width: 100%; border-collapse: collapse; }
-.table th, .table td {
-  text-align: left;
-  padding: 12px 10px;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-  vertical-align: top;
-}
-.table th { color: var(--muted); font-weight: 600; }
+.small { font-size: 13px; }
+.kpi { font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.kpi-sm { font-size: 28px; font-weight: 700; }
+
+/* ============================================================
+   BADGES / TAGS
+   ============================================================ */
 .badge {
-  display: inline-block;
-  padding: 6px 10px;
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(138,163,141,0.16);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--sage-pale);
   color: var(--sage-deep);
-  font-size: 12px;
-  font-weight: 600;
-  margin-right: 8px;
-  margin-bottom: 6px;
+  border: 1px solid rgba(138,163,141,0.20);
+  margin: 2px;
 }
-.badge.warning {
-  background: rgba(193,155,93,0.16);
-  color: var(--warning);
+.badge.champagne { background: var(--champ-pale); color: #9a7c3e; border-color: rgba(216,199,161,0.30); }
+.badge.warning   { background: rgba(192,152,86,0.12); color: var(--warning); border-color: rgba(192,152,86,0.20); }
+.badge.danger    { background: rgba(181,118,106,0.12); color: var(--danger); border-color: rgba(181,118,106,0.20); }
+.badge.info      { background: rgba(122,155,181,0.12); color: var(--info); border-color: rgba(122,155,181,0.20); }
+.badge.success   { background: rgba(107,138,111,0.12); color: var(--success); border-color: rgba(107,138,111,0.20); }
+.badge.dark      { background: rgba(42,40,37,0.08); color: var(--text); border-color: rgba(42,40,37,0.12); }
+
+/* Status badge helpers */
+.status-complete  { background: rgba(107,138,111,0.14); color: #4d7551; border-color: rgba(107,138,111,0.22); }
+.status-today     { background: rgba(192,152,86,0.18); color: #8a6520; border-color: rgba(192,152,86,0.28); }
+.status-upcoming  { background: var(--sage-pale); color: var(--sage-deep); border-color: rgba(138,163,141,0.20); }
+.status-tbc       { background: rgba(181,118,106,0.10); color: var(--danger); border-color: rgba(181,118,106,0.18); }
+
+/* ============================================================
+   ITEMS / LIST ROWS
+   ============================================================ */
+.item-row {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
 }
-.badge.danger {
-  background: rgba(184,120,107,0.15);
-  color: var(--danger);
-}
-.section-title {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: baseline;
-  margin-bottom: 16px;
-}
-.timeline-row {
+.item-row:last-child { margin-bottom: 0; }
+.item-row strong { font-weight: 600; }
+
+/* ============================================================
+   DIVIDERS
+   ============================================================ */
+.divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+
+/* ============================================================
+   TIMELINE ROWS
+   ============================================================ */
+.tl-row {
   display: grid;
-  grid-template-columns: 110px 1fr;
+  grid-template-columns: 120px 1fr;
   gap: 16px;
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
+  align-items: start;
 }
-.timeline-row:last-child { border-bottom: 0; }
-.time {
-  font-weight: 700;
-  color: var(--sage-deep);
-}
+.tl-row:last-child { border-bottom: none; }
+.tl-time { font-weight: 700; color: var(--sage-deep); font-size: 14px; font-variant-numeric: tabular-nums; }
+.tl-content strong { display: block; font-weight: 600; }
+.tl-content .small { margin-top: 3px; }
+
+/* ============================================================
+   CALLOUT / HIGHLIGHT BOX
+   ============================================================ */
 .callout {
-  padding: 16px 18px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(138,163,141,0.14), rgba(216,199,161,0.14));
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(138,163,141,0.10), rgba(216,199,161,0.12));
   border: 1px solid var(--line);
 }
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.callout-urgent {
+  background: linear-gradient(135deg, rgba(216,199,161,0.18), rgba(192,152,86,0.12));
+  border-color: rgba(192,152,86,0.22);
 }
-.page-intro {
+.callout-live {
+  background: linear-gradient(135deg, rgba(107,138,111,0.18), rgba(138,163,141,0.10));
+  border-color: rgba(107,138,111,0.28);
+  animation: pulse-border 2s ease-in-out infinite;
+}
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(107,138,111,0.28); }
+  50%       { border-color: rgba(107,138,111,0.55); }
+}
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+.countdown-wrap {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.countdown-unit {
+  text-align: center;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  min-width: 64px;
+}
+.countdown-num { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--sage-deep); line-height: 1; }
+.countdown-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+/* ============================================================
+   ACCORDION (Events page)
+   ============================================================ */
+.accordion-item {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+.accordion-item:hover { box-shadow: var(--shadow-card); }
+.accordion-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.accordion-header:hover { background: rgba(138,163,141,0.04); }
+.accordion-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+.accordion-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; line-height: 1.1; }
+.accordion-date { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.accordion-chevron {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--sage-pale);
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s ease, background 0.2s;
+  font-size: 14px;
+  color: var(--sage-deep);
+}
+.accordion-item.open .accordion-chevron { transform: rotate(180deg); background: var(--sage); color: white; border-color: var(--sage); }
+.accordion-body {
+  display: none;
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--line);
+}
+.accordion-item.open .accordion-body { display: block; }
+.accordion-body-inner { padding-top: 20px; }
+
+/* Accordion subsections */
+.event-section { margin-bottom: 24px; }
+.event-section:last-child { margin-bottom: 0; }
+.event-section-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.event-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.event-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.event-stat {
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.event-stat .label { display: block; margin-bottom: 4px; }
+.event-stat strong { font-size: 15px; }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th {
+  text-align: left; padding: 10px 12px;
+  border-bottom: 2px solid var(--line);
+  color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.table td { padding: 12px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: rgba(138,163,141,0.04); }
+
+/* ============================================================
+   PEOPLE CARDS
+   ============================================================ */
+.people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.person-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.18s;
+}
+.person-card:hover { box-shadow: var(--shadow-card); }
+.person-card.hidden-card { display: none; }
+.person-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; }
+.person-role { font-size: 13px; color: var(--muted); margin: 3px 0 10px; }
+.person-detail { font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+.person-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.filter-btn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel-solid);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--sage);
+  color: white;
+  border-color: var(--sage);
+}
+
+/* ============================================================
+   TRANSPORT CARDS
+   ============================================================ */
+.transport-event {
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+.transport-event-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; }
+.transport-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.flow-node {
+  background: var(--sage-pale);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px; font-weight: 500;
+}
+.flow-arrow { color: var(--muted); font-size: 16px; }
+.car-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
+.car-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.car-card .car-name { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.car-card .car-passengers { font-size: 13px; color: var(--muted); }
+
+/* ============================================================
+   GROOM SECTION — DARK THEME
+   ============================================================ */
+.groom-mode body, body.groom-mode {
+  /* applied via class on body */
+}
+#page-groom {
+  --g-bg:     #0d0d0d;
+  --g-panel:  rgba(28,28,28,0.92);
+  --g-panel2: rgba(38,38,38,0.85);
+  --g-red:    #c0392b;
+  --g-red2:   #e74c3c;
+  --g-gold:   #c0914c;
+  --g-text:   #e8e6e1;
+  --g-muted:  #888580;
+  --g-line:   rgba(255,255,255,0.08);
+  --g-glow:   0 0 40px rgba(192,57,43,0.15);
+  background: radial-gradient(ellipse at 30% 0%, rgba(192,57,43,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 100%, rgba(192,57,43,0.05) 0%, transparent 40%),
+              linear-gradient(160deg, #101010 0%, #0a0a0a 100%);
+  min-height: 80vh;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  color: var(--g-text);
+  position: relative;
+  overflow: hidden;
+}
+#page-groom::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--g-red), var(--g-gold), var(--g-red), transparent);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Groom lock screen */
+.groom-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  gap: 24px;
+}
+.groom-lock .lock-icon {
+  font-size: 48px;
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  background: rgba(192,57,43,0.12);
+  border: 1px solid rgba(192,57,43,0.25);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 40px rgba(192,57,43,0.1);
+}
+.groom-lock h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #e8e6e1;
+}
+.groom-lock p { color: #888; font-size: 14px; }
+.groom-lock .pw-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.groom-lock input[type=password] {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 15px;
+  color: #e8e6e1;
+  outline: none;
+  width: 220px;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+}
+.groom-lock input[type=password]:focus { border-color: rgba(192,57,43,0.5); }
+.groom-lock .pw-btn {
+  background: linear-gradient(135deg, #c0392b, #96281b);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: opacity 0.2s;
+}
+.groom-lock .pw-btn:hover { opacity: 0.88; }
+.groom-lock .pw-error { color: #e74c3c; font-size: 13px; display: none; }
+
+/* Groom inner content */
+.groom-inner { display: none; }
+.groom-inner.unlocked { display: block; }
+
+.g-card {
+  background: var(--g-panel);
+  border: 1px solid var(--g-line);
+  border-radius: var(--radius-md);
+  padding: 24px;
   margin-bottom: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--g-glow);
+  position: relative;
+  overflow: hidden;
+}
+.g-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+}
+.g-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #e8e6e1;
+  margin-bottom: 16px;
+}
+.g-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-red);
+  margin-bottom: 6px;
+  display: block;
+}
+.g-muted { color: #888; }
+.g-tl-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--g-line);
+  align-items: start;
+}
+.g-tl-row:last-child { border-bottom: none; }
+.g-tl-time { font-weight: 700; color: var(--g-red); font-size: 13px; font-variant-numeric: tabular-nums; }
+.g-tl-text { color: #ccc; font-size: 14px; }
+.g-checklist { list-style: none; }
+.g-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--g-line);
+  font-size: 14px;
+  color: #ccc;
+}
+.g-check-item:last-child { border-bottom: none; }
+.g-check-box {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(192,57,43,0.4);
+  flex-shrink: 0;
+  background: rgba(192,57,43,0.06);
+  cursor: pointer;
+  margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.g-check-box.checked { background: var(--g-red); border-color: var(--g-red); }
+.g-check-box.checked::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+.g-check-item.done span { text-decoration: line-through; color: #555; }
+.g-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px; font-weight: 600;
+  background: rgba(192,57,43,0.15);
+  color: var(--g-red2);
+  border: 1px solid rgba(192,57,43,0.22);
+  margin: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.g-note {
+  background: rgba(192,57,43,0.06);
+  border: 1px solid rgba(192,57,43,0.15);
+  border-left: 3px solid var(--g-red);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 10px;
+}
+.g-hug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.g-hug-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.g-hug-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(192,57,43,0.2);
+  color: var(--g-red2);
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   PAGE INTROS
+   ============================================================ */
+.page-intro {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+  max-width: 680px;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   NEXT EVENT CARD (Dashboard)
+   ============================================================ */
+.next-event-card {
+  background: linear-gradient(135deg, rgba(138,163,141,0.10), rgba(216,199,161,0.14));
+  border: 1px solid var(--line-hard);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.next-event-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sage), var(--champagne), var(--sage-deep));
+  border-radius: 3px 3px 0 0;
+}
+.next-event-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; margin-bottom: 6px; }
+.next-event-meta { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+/* ============================================================
+   PRINT / VENDOR PLACEHOLDER
+   ============================================================ */
+.placeholder-block {
+  text-align: center;
+  padding: 60px 40px;
   color: var(--muted);
 }
-@media (max-width: 1000px) {
-  .span-3, .span-4, .span-5, .span-6, .span-7, .span-8, .span-9, .span-12 { grid-column: span 12; }
-  .two-col { grid-template-columns: 1fr; }
+.placeholder-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.placeholder-block h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--text); margin-bottom: 8px; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { grid-column: span 12; }
+  .event-grid, .event-grid-3, .g-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 640px) {
-  .header { padding: 20px; }
-  .main { padding: 20px; }
-  .header h1 { font-size: 34px; }
-  .timeline-row { grid-template-columns: 86px 1fr; gap: 12px; }
+@media (max-width: 768px) {
+  .header { padding: 16px 20px 0; }
+  .header h1 { font-size: 28px; }
+  .main { padding: 20px 16px; }
+  .tl-row { grid-template-columns: 90px 1fr; gap: 12px; }
+  .g-tl-row { grid-template-columns: 110px 1fr; }
+  .accordion-header { padding: 18px; }
+  .accordion-body { padding: 0 18px 18px; }
+  .car-grid { grid-template-columns: 1fr 1fr; }
+  .countdown-wrap { gap: 8px; }
+  .countdown-num { font-size: 24px; }
+  #page-groom { padding: 20px 16px; }
+}
+@media (max-width: 480px) {
+  .people-grid { grid-template-columns: 1fr; }
+  .car-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Stone & Sage Wedding Ops Hub</h1>
-    <p>Luxury wedding coordination dashboard · logistics · transport · vendors · photo control</p>
-    <div class="nav" id="nav"></div>
-  </div>
 
-  <div class="main">
-    <section id="dashboard" class="page"></section>
-    <section id="timeline" class="page hidden"></section>
-    <section id="events" class="page hidden"></section>
-    <section id="people" class="page hidden"></section>
-    <section id="transport" class="page hidden"></section>
-    <section id="vendors" class="page hidden"></section>
-    <section id="photos" class="page hidden"></section>
-    <section id="groom" class="page hidden"></section>
-    <section id="packing" class="page hidden"></section>
-    <section id="print" class="page hidden"></section>
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<div class="header">
+  <div class="header-top">
+    <h1>Stone &amp; Sage &nbsp;<em>Wedding Ops Hub</em></h1>
+    <span class="header-sub">Internal Operations · Family Use Only</span>
   </div>
+  <nav class="nav" id="main-nav"></nav>
+</div>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div class="main">
+  <div id="page-dashboard" class="page active"></div>
+  <div id="page-timeline"  class="page"></div>
+  <div id="page-events"    class="page"></div>
+  <div id="page-people"    class="page"></div>
+  <div id="page-transport" class="page"></div>
+  <div id="page-vendors"   class="page"></div>
+  <div id="page-print"     class="page"></div>
+  <div id="page-groom"     class="page">
+    <!-- Lock Screen -->
+    <div class="groom-lock" id="groom-lock">
+      <div class="lock-icon">🔐</div>
+      <h2>Groom Command Centre</h2>
+      <p>Private access only. Enter password to continue.</p>
+      <div class="pw-wrap">
+        <input type="password" id="groom-pw" placeholder="Password" onkeydown="if(event.key==='Enter')groomUnlock()"/>
+        <button class="pw-btn" onclick="groomUnlock()">Enter</button>
+      </div>
+      <div class="pw-error" id="pw-error">Incorrect password. Try again.</div>
+    </div>
+    <!-- Groom Inner -->
+    <div class="groom-inner" id="groom-inner"></div>
+  </div>
+</div>
 
 <script>
-const data = {
-  dashboard: {
-    nextCritical: 'Nikah departure from Milton Keynes · 3:00 PM',
-    groomStatus: 'Nikah prep structure in progress',
-    currentFocus: 'Lock remaining Reception, Breakfast and transport details',
-    privateNotes: [
-      'Moss Bros Milton Keynes collection and final fitments needed between 23–24 April.',
-      'Hair + beard appointment needed Friday 24 April daytime.',
-      'Hotels, international guests and final car allocations to be added later.'
-    ]
-  },
+/* ============================================================
+   DATA LAYER
+   ============================================================ */
+const DATA = {
+
+  weddingDate: new Date('2026-04-25T17:00:00'),
+
   events: [
     {
       id: 'shadi-majlis',
       name: 'Shuruwaat-e-Shadi Majlis',
       date: 'Thursday 16 April 2026',
-      venue: 'KSMC of London, Stanmore (HA7 4LQ)',
-      type: 'Majlis / contribution evening',
-      internalStart: '6:45 PM arrival buffer',
-      publicStart: '7:00 PM',
-      groomLocation: 'Mosque',
-      notes: 'Low complexity. No speaking, no reserved seating, no formal programme ownership required. MK guests likely travelling down by car.',
-      status: 'Structure set, transport later'
+      dateISO: '2026-04-16',
+      venue: 'KSMC of London, Stanmore',
+      venueAddress: 'HA7 4LQ',
+      type: 'Majlis / Contribution Evening',
+      publicStart: '8:00 PM',
+      internalArrival: '7:45 PM',
+      departureAnchor: 'TBC — to finalise once cars locked',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Casual Thursday majlis with wedding contribution component. No formal role, no reserved seating, no speaking required.',
+      overview: 'Standard Thursday programme. Wedding contribution component included. Low complexity event — attend, participate, no ownership required.',
+      groomRole: 'Attendee — no formal responsibilities.',
+      timeline: [
+        ['7:45 PM', 'Arrive at KSMC Stanmore'],
+        ['8:00 PM', 'Programme begins'],
+        ['TBC', 'Programme ends / depart'],
+      ],
+      transport: {
+        route: 'Milton Keynes → KSMC Stanmore → Return to MK',
+        departureNote: 'Planning doc note: arrive by 7:45 PM. Allow ~60 min travel.',
+        cars: [
+          { name: 'Nissan', note: 'Full squad' },
+          { name: 'BJ Car', note: 'Boys + Salman or Zayn' },
+        ],
+        passengers: 'TBC — to finalise once all cars confirmed',
+        returnNote: 'Return to MK post programme',
+      },
+      people: ['BJ', 'Salman', 'Zayn', '+ MK guests travelling down'],
+      items: [],
+      vendors: [],
+      openQuestions: [
+        'Finalise transport — which cars, which passengers',
+        'Confirm MK guests who are travelling down',
+        'Confirm exact programme end time',
+      ],
     },
     {
       id: 'dua-night',
       name: 'Gents Dua Night',
       date: 'Sunday 19 April 2026',
-      venue: 'SJ Clubhouse, Hujjat Harefield (UB9 6NS)',
-      type: 'Gents only programme',
-      internalStart: '6:00 PM setup',
-      publicStart: '6:30 PM',
-      groomLocation: 'On site',
-      notes: 'AV installed. Food vendor is Cedars. AV lead is Shahid Ali Khaki. Programme coordinator and internal food liaison still to be locked.',
-      status: 'Partially defined'
+      dateISO: '2026-04-19',
+      venue: 'SJ Clubhouse, Hujjat Harefield',
+      venueAddress: 'UB9 6NS',
+      type: 'Gents Programme',
+      publicStart: '6:00 PM',
+      internalArrival: '5:00 PM',
+      departureAnchor: 'Leave MK 3:30 PM',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Gents-only Dua Night at Harefield. AV by Shahid Ali Khaki. Food by Cedars. Leave MK at 3:30 PM.',
+      overview: 'Gents-only event. Programme starts 6:00 PM, internal arrival by 5:00 PM. Leave Milton Keynes no later than 3:30 PM. Smart casual attire.',
+      groomRole: 'Attendee / host presence.',
+      timeline: [
+        ['9:00 AM', 'BJ beard trim'],
+        ['11:00 AM', 'Ladies doing plans TBC (morning)'],
+        ['3:30 PM', 'Depart Milton Keynes'],
+        ['5:00 PM', 'Arrive Harefield — settle and setup support'],
+        ['6:00 PM', 'Programme begins'],
+        ['TBC', 'Programme ends / return to MK'],
+      ],
+      transport: {
+        route: 'Milton Keynes → Hujjat Harefield → Return to MK',
+        departureNote: 'Leave MK 3:30 PM latest. ~75 min journey.',
+        cars: [
+          { name: 'Car 1 – Seat', note: '' },
+          { name: 'Car 2 – Nissan', note: '' },
+          { name: 'Car 3 – LR', note: '' },
+          { name: 'Car 4 – TBC', note: '' },
+        ],
+        passengers: 'BJ, Papa, Muntazir Uncle, Mamujaan, Bha, Dada, AJ Sadak, Husayn, MH, Nana, Hasnain Kaka, Salman, Motapapa, Zayn',
+        returnNote: 'Return to MK post programme',
+      },
+      people: ['BJ','Papa','Muntazir Uncle','Mamujaan','Bha','Dada','AJ Sadak','Husayn','MH','Nana','Hasnain Kaka','Salman','Motapapa','Zayn'],
+      items: [],
+      vendors: [
+        { type: 'Food', name: 'Cedars', notes: 'Food vendor for Dua Night. Final numbers and serving timing needed.' },
+        { type: 'AV', name: 'Shahid Ali Khaki', notes: 'AV Lead. Already confirmed. Setup at venue.' },
+      ],
+      openQuestions: [
+        'Assign programme coordinator',
+        'Assign internal food liaison',
+        'Finalise car allocations and passenger groupings',
+        'Confirm programme end time',
+      ],
     },
     {
       id: 'mehndi',
       name: 'Mehndi',
       date: 'Tuesday 21 April 2026',
-      venue: 'London Shenley Club, Radlett Lane',
-      type: 'Ladies event / gents as transport support',
-      internalStart: 'Setup TBC',
+      dateISO: '2026-04-21',
+      venue: 'London Shenley Club',
+      venueAddress: 'Radlett Lane',
+      type: 'Ladies Event — Gents as Transport & Support',
       publicStart: '6:30 PM',
-      groomLocation: 'Pre-event handover then off-site',
-      notes: 'Needs AV handover/training for ladies. Gents drop off ladies, leave to Tejani Airbnb placeholder, then return for pickup and hotel/home distribution.',
-      status: 'Complex transport event'
-    },
-    {
-      id: 'thursday-chill',
-      name: 'Thursday Night Majlis / Chill',
-      date: 'Thursday 23 April 2026',
-      venue: 'KSMC of London, Stanmore',
-      type: 'Optional informal attendance',
-      internalStart: 'Flexible',
-      publicStart: 'Evening',
-      groomLocation: 'Mosque if attending',
-      notes: 'Very casual. Gents may travel down. Ladies doing something private at home. No real event logistics required.',
-      status: 'Low priority'
+      internalArrival: '5:00 PM (Papa departs 4:00 PM with haul)',
+      departureAnchor: 'Leave MK 5:00–5:15 PM (public told 5:00 PM)',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Major ladies event. Gents drive down, drop ladies, hold at Tejani Airbnb (TBC), then return for pickup and redistribute to homes/hotels.',
+      overview: 'Ladies-primary event. Gents act as drivers and support. Papa leaves early at 4:00 PM with haul truck carrying desserts, gifts, and equipment. Main convoy leaves MK 5:00–5:15 PM. Gents drop ladies, go off-site, then return to collect and redistribute.',
+      groomRole: 'Driver convoy lead. Depart early with Papa if possible, or lead main convoy.',
+      timeline: [
+        ['4:00 PM', 'Papa departs MK with haul truck — desserts, gifts, equipment'],
+        ['4:00 PM', 'Shahid Ali to set up AV at venue (timing to confirm)'],
+        ['5:00–5:15 PM', 'Main convoy departs MK (public told 5:00 PM)'],
+        ['6:00–6:15 PM', 'Arrive venue — drop ladies, unload'],
+        ['6:30 PM', 'Ladies programme begins'],
+        ['TBC', 'Gents hold at Tejani Airbnb (placeholder — to confirm)'],
+        ['TBC', 'Gents return to venue for pickup'],
+        ['TBC', 'Redistribute to homes / hotels / MK'],
+      ],
+      transport: {
+        route: 'MK → Shenley Club (drop) → Tejani Airbnb TBC (hold) → Shenley Club (pickup) → Homes/Hotels/MK',
+        departureNote: 'Leave MK 5:00–5:15 PM. Papa goes at 4:00 PM with haul. Approx 60–75 min journey.',
+        cars: [
+          { name: 'Car 1 – Mustang', note: 'BJ, Papa' },
+          { name: 'Car 2 – Nissan', note: 'Fufijaan, Khalajaan, Nani + Gift' },
+          { name: 'Car 3 – Rental 9-seater', note: 'Motima, Ateqa Aunty, Hannah, Masuma Govani + kids' },
+          { name: 'Car 4 – Nishat Masa', note: 'Mamijaan / Zainab Kaki + Gift' },
+        ],
+        passengers: 'Mum, Nani, Khalajaan, Fufijaan, Mamijaan, Ateqa Aunty, Hannah, Tayaba Bai (reverse), Hasan Lalji (reverse), Maryam Lalji (reverse), Motima, Zainab Kaki, Masuma Govani + 2 kids',
+        returnNote: 'Return passengers: BJ, Papa, Motapapa, Nishat Masa, Mum, Ateqa Aunty, Fufijaan, Khalajaan, Nani, Hannah, Mamijaan, Hasan Lalji, Zainab Kaki, Masuma Govani, Motima, Govani kids, Tayaba Bai, Maryam Lalji, Zainab Lalji',
+      },
+      people: ['Mum','Nani','Khalajaan','Fufijaan','Mamijaan','Ateqa Aunty','Hannah','Motima','Zainab Kaki','Masuma Govani'],
+      items: [
+        'Carpets', 'Desserts', 'Dessert stands',
+        'Imam Zamin', 'Flowerpot 1', 'Chocolate', 'Mehndi gift', 'Green suit',
+        'Flowerpot 2', 'Ladoos', 'Makeup', 'Shoes', 'Oud', 'Set 1',
+        'Wedding suit', 'Flowerpot 3', 'Sports kit', 'Dry fruit',
+      ],
+      vendors: [
+        { type: 'AV', name: 'Shahid Ali Khaki', notes: 'Quick setup at 4:00 PM — screen, PowerPoint, playback, wireless mic. Ladies to run AV themselves post training. Fallback: built-in venue system.' },
+        { type: 'Carpets', name: 'Muhammedali Somji', notes: 'Pick up carpets in Arteon and bring back to Somji house post event.' },
+      ],
+      openQuestions: [
+        'Confirm Tejani Airbnb placeholder — where are gents going during the event?',
+        'Confirm AV setup timing with Shahid Ali',
+        'Confirm makeup timings',
+        'Confirm dessert stands shipped in advance vs brought on the day',
+        'Sort food for men staying at home (Nana cooking / Muntazir Uncle — head of kitchen)',
+        'Message Muhammedali Somji re: carpet collection in Arteon',
+        'Confirm final car passenger allocations',
+      ],
     },
     {
       id: 'mess-up',
-      name: 'Mess Up',
+      name: 'Miqdad Mess Up',
       date: 'Friday 24 April 2026',
-      venue: 'Home',
-      type: 'Gents dinner / chilled evening',
-      internalStart: '6:00 PM arrival window',
-      publicStart: '6:30–7:00 PM',
-      groomLocation: 'Home',
-      notes: 'Best man Shahid Abbas Jafar leading guest list and flow. Keep controlled and not too late ahead of Nikah.',
-      status: 'Social but important'
+      dateISO: '2026-04-24',
+      venue: 'Home (Milton Keynes)',
+      venueAddress: 'Somji Manzil, MK',
+      type: 'Gents Evening — Pre-Nikah Celebration',
+      publicStart: '6:30 PM',
+      internalArrival: '6:00 PM',
+      departureAnchor: 'N/A — home event',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Chilled gents BBQ evening at home led by Best Man Shahid Abbas. Pre-Nikah celebration — keep controlled, not too late.',
+      overview: 'Gents evening at home led by Best Man Shahid Abbas Jafar. After-work people head up. Quran and duas followed by BBQ. Must not run too late — Nikah is next morning.',
+      groomRole: 'Host. Relax. Get the guys together. Wind down.',
+      timeline: [
+        ['Morning', 'Finalise outfits, clean cars, clean house'],
+        ['Daytime', 'Moss Bros MK — tux collection and fitments (confirm 23–24 April)'],
+        ['Daytime', 'Beard + hair sorted'],
+        ['Daytime', 'Fuel up cars, set up livestreams, run through final kit list'],
+        ['18:00', 'People arrive'],
+        ['18:30', 'Quran'],
+        ['18:35', 'Dua Simat'],
+        ['18:50', 'Dua Wahda'],
+        ['19:00', 'Mess Up — BBQ'],
+        ['20:15', 'Namaz'],
+        ['20:30', 'Iftar'],
+        ['TBC', 'Wind down — not too late'],
+      ],
+      transport: { route: 'N/A — home event', departureNote: 'Guests making own way up', cars: [], passengers: 'Gents making own way', returnNote: 'Own way home / staying nearby' },
+      people: ['Shahid Abbas Jafar (lead)','Jabs','Gents'],
+      items: [
+        'Foil trays', 'Drinks', 'Charcoal', 'BBQ fuel', 'BBQ & gas chullo',
+        'Chips', 'Oil and salt', 'Sauces', 'Amli', 'Burger buns',
+        'Farmfoods burgers', 'Chicken niblets',
+        '— Ladies menu —', 'Chicken breast', 'Bihari Mishkaki', 'Potato salad',
+      ],
+      vendors: [],
+      openQuestions: [
+        'Get meat / ingredients by Thursday (24 April)',
+        'Nana to make potato salad',
+        'Moss Bros tux — confirm exact collection date (23 or 24 April)',
+        'Book beard + hair appointment for daytime 24 April',
+        'Confirm guest list with Shahid Abbas',
+        'Set up all livestreams before evening',
+      ],
     },
     {
       id: 'nikah',
       name: 'Nikah',
       date: 'Saturday 25 April 2026',
+      dateISO: '2026-04-25',
       venue: 'KSMC of London, Stanmore',
-      type: 'Main ceremony',
-      internalStart: 'First look 4:00 PM',
+      venueAddress: 'HA7 4LQ',
+      type: 'Main Ceremony',
       publicStart: '5:00 PM',
-      groomLocation: 'MK > first look > mosque > Brocket Hall',
-      notes: 'Best man owns timeline. Morning at home kept calm. Pre-event send-off at house. After Nikah, movement continues to Brocket Hall stayover.',
-      status: 'Most structured event so far'
+      internalArrival: '4:45 PM (BJ arrives 4:15 PM)',
+      departureAnchor: 'BJ departs MK 2:15 PM · Family departs MK 3:00 PM',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'The main day. MK → First Look → KSMC Stanmore → Brocket Hall. Best man owns timeline. Morning: calm, controlled, key people only.',
+      overview: 'The most important operational day. Best man is timeline owner. Brothers are execution support. Morning kept calm — only key people in house. Bags and outfits for full weekend must be loaded before leaving MK. Route: MK → First Look → Nikah at KSMC → overnight at Brocket Hall.',
+      groomRole: 'Let best man run the clock. Morning: calm and present. Depart on time.',
+      timeline: [
+        ['9:00 AM', 'Miqdad beard trim · Shahid Abbas & Jabs to come home AM'],
+        ['9:00 AM', 'Gents go to barbers — confirm appointments'],
+        ['9:30–10:30 AM', 'Shower, breakfast, freshen up'],
+        ['10:30–11:30 AM', 'Soft prep window — outfit checks, flowers, cars, bags'],
+        ['12:00 PM', 'Start dressing and formal prep'],
+        ['13:15', 'Namaz'],
+        ['13:30', 'Goor ceremony'],
+        ['13:45–14:00', 'Buffer window for delays and fixes'],
+        ['14:15', 'BJ, Shahid Abbas, Jabs depart MK'],
+        ['15:00', 'Family departs MK'],
+        ['15:30–16:00', 'First Look'],
+        ['16:15', 'BJ arrives at mosque'],
+        ['16:30', 'Family arrives at mosque'],
+        ['17:00', 'Programme opens'],
+        ['17:05', 'Quran'],
+        ['17:12', 'Hadith-e-Kisa'],
+        ['17:25', 'Qaseedah'],
+        ['17:35', 'Lecture'],
+        ['18:00', 'Nikah recitation'],
+        ['18:20', 'Qaseedah'],
+        ['18:25', 'Speech'],
+        ['18:35', 'Qaseedah'],
+        ['18:42', 'Vote of thanks'],
+        ['18:50', 'Ziyarat'],
+        ['19:00', 'Dinner'],
+        ['19:30', 'Handshaking ceremony'],
+        ['20:00', 'Exit'],
+        ['TBC', 'Travel to Brocket Hall'],
+      ],
+      transport: {
+        route: 'MK → First Look → KSMC Stanmore → Brocket Hall',
+        departureNote: 'BJ + Shahid Abbas + Jabs depart 2:15 PM. Family departs 3:00 PM.',
+        cars: [
+          { name: 'Car 1 – Mustang', note: 'BJ, Shahid Abbas, Jabs' },
+          { name: 'Car 2 – Nissan', note: 'Papa, Motapapa + family' },
+          { name: 'Car 3 – Rental 9-seater', note: 'Extended family' },
+          { name: 'Car 4 – Nishat Masa', note: 'Nishat Masa + passengers' },
+          { name: 'Car 5 – Mamujaan', note: 'Mamujaan + family' },
+          { name: 'Car 6 – Bengali Chacha (Muntazir Uncle)', note: 'Bengali Chacha + passengers' },
+        ],
+        passengers: 'BJ, Papa, Motapapa, Nishat Masa, Mamujaan, Muntazir Uncle, Shahid Abbas, Mum, Motima, Khalajaan, Mamijaan, Ateqa Aunty, Fufijaan, Nana, Husayn, Zayn, Dada, Nani, Salman, Tayaba Bai, Bha, Hasan Lalji, MH, Maryam Lalji, Zainab Lalji',
+        returnNote: 'Post ceremony → travel to Brocket Hall for overnight stay',
+      },
+      people: ['Shahid Abbas Jafar (best man / timeline owner)','Jabs','BJ','Papa','Mum','MH','Bha','Dada','Nana','Nani'],
+      items: [
+        '— Goor items —', 'Imam Zamin', 'Tray', 'Coins', 'Boutonnieres',
+        '— Post-Nikah items —', 'Pink tray', 'Money coins', 'Bangles', 'Gift bags',
+        '— Weekend bags —', 'Nikah outfit', 'Reception outfit', 'Casual daytime', 'Sunday evening outfit', 'Monday return outfit', 'Nightwear',
+        '— Essentials —', 'Phone charger', 'Portable charger', 'Tissues', 'Mints', 'Deodorant', 'Comb/brush', 'Lip balm', 'Painkillers', 'Watch', 'Cufflinks', 'Tie/bow tie', 'Pocket square', 'Perfume', 'Hair product',
+      ],
+      vendors: [
+        { type: 'Flowers', name: 'TBC', notes: 'Boutonniere + family flowers. Must be collected before departure from MK.' },
+        { type: 'Venue', name: 'KSMC of London, Stanmore', notes: 'Primary ceremony venue.' },
+        { type: 'Stayover', name: 'Brocket Hall', notes: 'Post-Nikah overnight stay.' },
+      ],
+      openQuestions: [
+        'Book barber appointments for Nikah morning',
+        'Confirm flower collection logistics and who collects',
+        'Ateqa Aunty to confirm makeup timings',
+        'Jabs to collect envelopes and keep safe — tell MT as well',
+        'Ladies side to pass envelope to Ateqa Aunty → Somji Manzil',
+        'Finalise car allocations and who goes in which car',
+        'Confirm Brocket Hall arrival logistics and room details',
+        'All outfits and weekend packing loaded in car before leaving MK',
+      ],
     },
     {
       id: 'reception',
       name: 'Reception',
       date: 'Sunday 26 April 2026',
+      dateISO: '2026-04-26',
       venue: 'Brocket Hall',
-      type: 'Main reception',
-      internalStart: 'TBC',
-      publicStart: 'TBC',
-      groomLocation: 'Brocket Hall',
-      notes: 'Placeholder built in for now. Needs full run of show, photo priorities, vendor timings, guest flow and outfit logic.',
-      status: 'Needs buildout'
+      venueAddress: 'Hertfordshire',
+      type: 'Main Reception',
+      publicStart: '3:00 PM',
+      internalArrival: 'Setup from 9:00 AM',
+      departureAnchor: 'Overnight at Brocket Hall → return Monday',
+      status: 'upcoming',
+      statusLabel: 'Upcoming — Needs Buildout',
+      summary: 'Main reception at Brocket Hall. Brunch at Somji Manzil 11:00 AM. Event from 3:00 PM. Full run of show, photo priorities and vendor timings to be added.',
+      overview: 'Placeholder built. Needs full run of show, photo priorities, vendor timings, guest flow and outfit logic to be added. Brunch at Somji Manzil 11:00 AM before event.',
+      groomRole: 'Groom + bride together. Full day.',
+      timeline: [
+        ['9:00 AM', 'Setup begins at Brocket Hall'],
+        ['11:00 AM', 'Brunch at Somji Manzil'],
+        ['1:00 PM', 'Khalafui & Bengali Chacha arrive'],
+        ['3:00 PM', 'Event begins'],
+        ['TBC', 'Run of show — to be built'],
+        ['TBC', 'Event ends'],
+      ],
+      transport: {
+        route: 'Brocket Hall (staying) → Reception on site',
+        departureNote: 'Overnight from Nikah. Family may travel from Somji Manzil / other locations.',
+        cars: [
+          { name: 'Car 2 – Nissan', note: '' },
+          { name: 'Car 3 – Rental 9-seater', note: '' },
+          { name: 'Car 4 – Nishat Masa', note: '' },
+          { name: 'Car 5 – Mamujaan', note: '' },
+          { name: 'Car 6 – Bengali Chacha', note: '' },
+        ],
+        passengers: 'Mum, Motapapa, Nishat Masa, Mamujaan, Muntazir Uncle, Bha, Motima, Khalajaan, Mamijaan, Ateqa Aunty, MH, Fufijaan, Nana, Husayn, Papa, Hannah, Dada, Nani, Tayaba Bai, Hasan, Maryam, Zainab',
+        returnNote: 'Return to MK Monday morning before Family Breakfast',
+      },
+      people: ['Full family'],
+      items: ['Reception outfit', 'All weekend bag items'],
+      vendors: [],
+      openQuestions: [
+        'Build full run of show',
+        'Add photo priorities and photographer briefing',
+        'Add vendor timings (catering, florals, music)',
+        'Map guest flow and seating',
+        'Confirm outfit change logistics',
+      ],
     },
     {
       id: 'breakfast',
       name: 'Family Breakfast',
       date: 'Monday 27 April 2026',
-      venue: 'Home in Milton Keynes',
-      type: 'Post-wedding family breakfast',
-      internalStart: 'Morning return from Brocket Hall',
-      publicStart: 'Breakfast / family gathering',
-      groomLocation: 'Travelling back then home',
-      notes: 'Bride and close family breakfast at house. Exact timings still to be confirmed.',
-      status: 'Placeholder set'
-    }
+      dateISO: '2026-04-27',
+      venue: 'Somji Manzil, Milton Keynes',
+      venueAddress: 'MK',
+      type: 'Post-Wedding Family Breakfast',
+      publicStart: 'TBC — morning',
+      internalArrival: 'Return from Brocket Hall + setup',
+      departureAnchor: 'Travel back from Brocket Hall',
+      status: 'upcoming',
+      statusLabel: 'Placeholder',
+      summary: 'Intimate family breakfast at home with bride and close family. Return from Brocket Hall. Timings TBC.',
+      overview: 'Placeholder. Travel back from Brocket Hall in the morning. Bride and close family breakfast at Somji Manzil. Exact timings to be confirmed. Prep items (all the stuff for Monday breakfast) to be bought by 24 April.',
+      groomRole: 'Host. First morning as a married couple.',
+      timeline: [
+        ['TBC', 'Depart Brocket Hall'],
+        ['TBC', 'Arrive Somji Manzil MK'],
+        ['TBC', 'Family Breakfast'],
+      ],
+      transport: { route: 'Brocket Hall → Milton Keynes (Somji Manzil)', departureNote: 'Morning, TBC', cars: [], passengers: 'TBC', returnNote: 'Guests make their own way home' },
+      people: ['Bride','Mum','Papa','MH','Bha','Dada','Nana','Nani','Close family'],
+      items: ['Monday breakfast supplies — to be bought by Friday 24 April'],
+      vendors: [],
+      openQuestions: ['Confirm exact timing', 'Confirm who is attending', 'Buy all Monday breakfast items by 24 April'],
+    },
   ],
-  tasks: [
-    { name: 'Collect tux from Moss Bros Milton Keynes', due: '23–24 April', owner: 'Groom / support', status: 'Open' },
-    { name: 'Final fitments', due: '23–24 April', owner: 'Groom', status: 'Open' },
-    { name: 'Hair + beard appointment', due: '24 April daytime', owner: 'Groom', status: 'Open' },
-    { name: 'Pack full weekend bag before leaving MK', due: '25 April morning', owner: 'Groom + brothers', status: 'Open' },
-    { name: 'Confirm Mehndi AV setup / training time', due: 'Before 21 April', owner: 'Somji side', status: 'Open' },
-    { name: 'Confirm programme coordinator for Dua Night', due: 'Before 19 April', owner: 'Somji side', status: 'Open' }
-  ],
-  vendors: [
-    { type: 'Food', name: 'Cedars', coverage: 'Gents Dua Night', lead: 'Vendor-led / internal liaison TBC', notes: 'Need final numbers and serving timing.' },
-    { type: 'AV', name: 'Venue / installed system', coverage: 'Gents Dua Night', lead: 'Shahid Ali Khaki', notes: 'Already set up on site.' },
-    { type: 'AV', name: 'Ladies-run AV', coverage: 'Mehndi', lead: 'Ladies side', notes: 'Needs screen, PowerPoint, playback, wireless mic, plus training and fallback to venue system.' },
-    { type: 'Flowers', name: 'TBC', coverage: 'Nikah / family flowers / boutonniere', lead: 'Groom side', notes: 'Must be collected before departure from MK.' },
-    { type: 'Formalwear', name: 'Moss Bros Milton Keynes', coverage: 'Nikah / reception prep', lead: 'Groom', notes: 'Tux collection and fitments required during that week.' }
-  ],
+
   people: [
-    { name: 'Miqdad', role: 'Groom', detail: 'Needs calm timeline, packed weekend bags and controlled movement.' },
-    { name: 'Shahid Abbas Jafar', role: 'Best Man', detail: 'Timeline owner for Nikah day and lead for Mess Up guest flow.' },
-    { name: 'Shahid Ali Khaki', role: 'AV Lead', detail: 'Dua Night AV lead.' },
-    { name: 'Dad', role: 'Event lead / family operations', detail: 'Shared lead on Dua Night and Nikah-day family flow.' },
-    { name: 'Father-in-law', role: 'Event lead', detail: 'Shared lead on Dua Night.' },
-    { name: 'Brothers', role: 'Execution support', detail: 'Help with packing, loading, house control and day-of support.' },
-    { name: 'MK Guests', role: 'Travel group', detail: 'Need final hotel, international arrival and car allocation mapping.' }
+    { name: 'Miqdad', role: 'Groom', detail: 'Needs calm timeline, packed weekend bags and controlled movement on all days.', tags: ['core','immediate-family','high-priority'] },
+    { name: 'Mum', role: 'Mother of Groom', detail: 'Key family presence across all events.', tags: ['core','immediate-family','multi-event'] },
+    { name: 'Papa', role: 'Father of Groom', detail: 'Event lead and family operations. Departs early with haul on Mehndi day. Key Dua Night lead.', tags: ['core','immediate-family','driver','multi-event','high-priority'] },
+    { name: 'Bha', role: 'Brother', detail: 'Execution support on Nikah day and across wedding week.', tags: ['core','immediate-family','multi-event'] },
+    { name: 'Mohammed Haadi (MH)', role: 'Brother', detail: 'Execution support. Key house presence on Nikah morning.', tags: ['core','immediate-family','multi-event'] },
+    { name: 'Dada', role: 'Grandfather (Paternal)', detail: 'Senior family presence across all events.', tags: ['core','immediate-family','multi-event','transport-relevant'] },
+    { name: 'Nana', role: 'Grandfather (Maternal)', detail: 'Home support / kitchen lead when men stay home during Mehndi. Potato salad for Mess Up.', tags: ['core','immediate-family','kitchen','home-support','multi-event'] },
+    { name: 'Nani', role: 'Grandmother (Maternal)', detail: 'Senior family presence. Potentially reading Hadith-e-Kissa at Mum Dua Night.', tags: ['core','immediate-family','multi-event','transport-relevant'] },
+    { name: 'Shahid Abbas Jafar', role: 'Best Man', detail: 'Timeline owner for Nikah day. Leads Mess Up guest flow. Comes to Somji Manzil morning of Nikah.', tags: ['ops','best-man','high-priority','multi-event'] },
+    { name: 'Jabs', role: 'Best Friend', detail: 'Best friend. Collects envelopes and keeps safe on Nikah day. Comes to Somji Manzil morning of Nikah.', tags: ['ops','best-friend','high-priority'] },
+    { name: 'Shahid Ali Khaki', role: 'AV Lead', detail: 'AV lead for Dua Night and Mehndi setup.', tags: ['ops','av','multi-event'] },
+    { name: 'Khudayjah', role: 'Shahid Abbas\'s Wife', detail: 'Wife of best man.', tags: ['extended-family'] },
+    { name: 'Motapapa', role: 'Uncle (Paternal)', detail: 'Extended family. Present across multiple events. Driver for key movements.', tags: ['extended-family','driver','multi-event','transport-relevant'] },
+    { name: 'Motima', role: 'Aunt (Paternal)', detail: 'Extended family. Present across events.', tags: ['extended-family','multi-event'] },
+    { name: 'Fufijaan', role: 'Uncle (Maternal)', detail: 'Reading Dua Kumayl at Mum Dua Night. Present across events.', tags: ['extended-family','multi-event','transport-relevant'] },
+    { name: 'Khalajaan', role: 'Aunt', detail: 'Arriving Monday 20 April with Nishat Masa. Present across events.', tags: ['extended-family','multi-event'] },
+    { name: 'Nishat Masa', role: 'Uncle (Khalajaan\'s Husband)', detail: 'Driver. Arriving Monday 20 April. Car available for Mehndi and Nikah.', tags: ['extended-family','driver','transport-relevant','multi-event'] },
+    { name: 'Mamijaan', role: 'Aunt (Maternal)', detail: 'Present across events.', tags: ['extended-family','multi-event','transport-relevant'] },
+    { name: 'Mamujaan', role: 'Uncle (Maternal)', detail: 'Car available. Driver for Nikah transport.', tags: ['extended-family','driver','transport-relevant','multi-event'] },
+    { name: 'Ateqa Aunty', role: 'Aunt', detail: 'Cooks for multiple days. Arrives Thursday 23 April at 5:00 PM. Makeup coordination for Nikah. To confirm final order of Mum Dua Night with Khudayjah.', tags: ['extended-family','kitchen','multi-event','high-priority'] },
+    { name: 'Muntazir Uncle (Bengali Chacha)', role: 'Uncle / Driver', detail: 'Also known as Bengali Chacha. Head of kitchen for men staying home during Mehndi. Driver for Nikah transport.', tags: ['extended-family','driver','kitchen','home-support','transport-relevant','multi-event'] },
+    { name: 'Husayn', role: 'Cousin', detail: 'Present across events.', tags: ['extended-family','multi-event'] },
+    { name: 'Salman', role: 'Cousin / Friend', detail: 'Present across events. MK-based. Dua Night and Shadi Majlis travel.', tags: ['extended-family','multi-event'] },
+    { name: 'Zayn', role: 'Cousin / Friend', detail: 'Present across events.', tags: ['extended-family','multi-event'] },
+    { name: 'Tayaba Bai', role: 'Cousin', detail: 'Three kids: Hasan, Maryam, Zainab. Reverse trip on Mehndi.', tags: ['extended-family','multi-event'] },
+    { name: 'Hasan Lalji', role: 'Cousin (Tayaba\'s son)', detail: 'Tayaba Bai\'s child. Reverse trip on Mehndi.', tags: ['extended-family'] },
+    { name: 'Maryam Lalji', role: 'Cousin (Tayaba\'s daughter)', detail: 'Tayaba Bai\'s child.', tags: ['extended-family'] },
+    { name: 'Zainab Lalji', role: 'Cousin (Tayaba\'s daughter)', detail: 'Tayaba Bai\'s child.', tags: ['extended-family'] },
+    { name: 'Zainab Kaki', role: 'Dada\'s Cousin', detail: 'Dada\'s cousin. Present at Mehndi.', tags: ['extended-family'] },
+    { name: 'Hasnain Kaka', role: 'Dada\'s Cousin', detail: 'Dada\'s cousin. Dua Night guest.', tags: ['extended-family'] },
+    { name: 'AJ Sadak', role: 'Family / Sadak side', detail: 'Dua Night attendee.', tags: ['extended-family'] },
+    { name: 'Fatim Aunty Sadak', role: 'Family / Sadak side', detail: '', tags: ['extended-family'] },
+    { name: 'Sakina Sadak', role: 'Family / Sadak side', detail: '', tags: ['extended-family'] },
+    { name: 'Abbas Sadak', role: 'Family / Sadak side', detail: '', tags: ['extended-family'] },
+    { name: 'Masuma Govani', role: 'Family / Friend', detail: 'Mehndi guest. Travelling with 2 kids.', tags: ['extended-family'] },
+    { name: 'Sameer', role: 'Fiancée\'s Uncle', detail: 'Fiancée side. BJ hug order post Nikah.', tags: ['fiancee-side'] },
+    { name: 'Asif', role: 'Fiancée\'s Uncle', detail: 'Fiancée side. BJ hug order post Nikah.', tags: ['fiancee-side'] },
+    { name: 'Hannah', role: 'Fiancée', detail: 'The bride. Present at Mehndi, Reception, Family Breakfast.', tags: ['core','high-priority'] },
   ],
+
   transport: [
-    { event: 'Shadi Majlis', flow: 'Milton Keynes → Stanmore mosque → return', status: 'Passengers TBC', notes: 'Likely mum + grandparents in car if capacity allows.' },
-    { event: 'Dua Night', flow: 'Milton Keynes → Harefield → return', status: 'Car groups TBC', notes: 'No final allocations yet.' },
-    { event: 'Mehndi', flow: 'Milton Keynes → venue drop-off → Tejani Airbnb placeholder → venue pickup → homes/hotels', status: 'Most complex', notes: 'Hotels needed before final allocation.' },
-    { event: 'Nikah', flow: 'Milton Keynes → first look → Stanmore mosque → Brocket Hall', status: 'Primary groom travel locked', notes: 'Need family and luggage vehicle logic later.' },
-    { event: 'Breakfast return', flow: 'Brocket Hall → Milton Keynes home', status: 'TBC', notes: 'Morning return before family breakfast.' }
+    {
+      event: 'Shadi Majlis', date: '16 Apr', id: 'shadi-majlis',
+      route: ['Milton Keynes', 'KSMC Stanmore', 'Return MK'],
+      departure: 'TBC — ~7:00 PM departure from MK to arrive by 7:45 PM',
+      status: 'tbc', statusLabel: 'TBC',
+      cars: [{ name: 'Nissan', passengers: 'Full squad' }, { name: 'BJ Car', passengers: 'Boys + Salman or Zayn' }],
+      notes: 'Low complexity. MK guests travelling down. Finalise once cars confirmed.',
+    },
+    {
+      event: 'Dua Night', date: '19 Apr', id: 'dua-night',
+      route: ['Milton Keynes', 'Hujjat Harefield', 'Return MK'],
+      departure: 'Leave MK 3:30 PM · ~75 min journey',
+      status: 'partial', statusLabel: 'Partial',
+      cars: [
+        { name: 'Car 1 – Seat', passengers: 'TBC' },
+        { name: 'Car 2 – Nissan', passengers: 'TBC' },
+        { name: 'Car 3 – LR', passengers: 'TBC' },
+        { name: 'Car 4 – TBC', passengers: 'TBC' },
+      ],
+      notes: '14 men confirmed for this event. Final passenger groupings TBC.',
+    },
+    {
+      event: 'Mehndi', date: '21 Apr', id: 'mehndi',
+      route: ['Milton Keynes', 'Shenley Club (drop)', 'Tejani Airbnb TBC (hold)', 'Shenley Club (pickup)', 'Hotels / MK'],
+      departure: 'Papa departs 4:00 PM with haul · Main convoy 5:00–5:15 PM',
+      status: 'complex', statusLabel: 'Most Complex',
+      cars: [
+        { name: 'Mustang', passengers: 'BJ, Papa' },
+        { name: 'Nissan', passengers: 'Fufijaan, Khalajaan, Nani + Gift' },
+        { name: 'Rental 9-seater', passengers: 'Motima, Ateqa Aunty, Hannah, Masuma Govani + kids' },
+        { name: 'Nishat Masa', passengers: 'Mamijaan, Zainab Kaki + Gift' },
+      ],
+      notes: 'Split movement. Gents drop ladies, hold off-site at Tejani Airbnb (placeholder, TBC), return for pickup. Nana + Muntazir Uncle stay home as kitchen support.',
+    },
+    {
+      event: 'Nikah', date: '25 Apr', id: 'nikah',
+      route: ['Milton Keynes', 'First Look', 'KSMC Stanmore', 'Brocket Hall'],
+      departure: 'BJ + Shahid Abbas + Jabs: 2:15 PM · Family: 3:00 PM',
+      status: 'defined', statusLabel: 'Defined',
+      cars: [
+        { name: 'Mustang (Car 1)', passengers: 'BJ, Shahid Abbas, Jabs' },
+        { name: 'Nissan (Car 2)', passengers: 'Papa, Motapapa + TBC' },
+        { name: 'Rental 9-seater (Car 3)', passengers: 'Extended family' },
+        { name: 'Nishat Masa (Car 4)', passengers: 'Nishat Masa + TBC' },
+        { name: 'Mamujaan (Car 5)', passengers: 'Mamujaan + TBC' },
+        { name: 'Bengali Chacha (Car 6)', passengers: 'Muntazir Uncle + TBC' },
+      ],
+      notes: 'Groom route: MK → First Look 3:30–4:00 PM → mosque 4:15 PM. Weekend bags must all be in cars before leaving MK. Post Nikah → Brocket Hall overnight.',
+    },
+    {
+      event: 'Reception Return', date: '27 Apr', id: 'breakfast',
+      route: ['Brocket Hall', 'Milton Keynes (Somji Manzil)'],
+      departure: 'Monday morning — TBC',
+      status: 'tbc', statusLabel: 'TBC',
+      cars: [],
+      notes: 'Return from Brocket Hall for Family Breakfast at Somji Manzil.',
+    },
   ],
-  photos: [
-    { event: 'Nikah', item: 'At-home relaxed family photos before departure', status: 'Suggested' },
-    { event: 'Nikah', item: 'First look 4:00–4:30 PM', status: 'Locked' },
-    { event: 'Nikah', item: 'Family formals after ceremony / dinner flow as allowed', status: 'Needs sequencing' },
-    { event: 'Reception', item: 'Couple portraits', status: 'Placeholder' },
-    { event: 'Reception', item: 'Friends / lads shots', status: 'Placeholder' },
-    { event: 'Mehndi', item: 'Gift handover and pre-event groom presence moments', status: 'Needs confirmation' }
+
+  vendors: [
+    { type: 'Food', name: 'Cedars', event: 'Gents Dua Night', lead: 'Internal liaison TBC', status: 'confirmed', notes: 'Confirm final numbers and serving timing.' },
+    { type: 'AV', name: 'Shahid Ali Khaki', event: 'Dua Night + Mehndi setup', lead: 'Shahid Ali Khaki', status: 'confirmed', notes: 'Dua Night: AV set up on site. Mehndi: quick setup 4:00 PM — screen, PowerPoint, playback, wireless mic. Ladies to run themselves post training.' },
+    { type: 'Flowers', name: 'TBC', event: 'Nikah / family flowers / boutonniere', lead: 'Groom side', status: 'tbc', notes: 'Must be collected before departure from MK on Nikah day.' },
+    { type: 'Formalwear', name: 'Moss Bros Milton Keynes', event: 'Nikah / Reception', lead: 'Groom', status: 'action', notes: 'Tux collection and fitments. Confirm 23 or 24 April.' },
+    { type: 'Venue', name: 'Brocket Hall', event: 'Reception + Overnight Stay', lead: 'TBC', status: 'confirmed', notes: 'Reception Sunday 26 April + Nikah overnight.' },
+    { type: 'Venue', name: 'KSMC of London', event: 'Shadi Majlis + Nikah ceremony', lead: 'Venue', status: 'confirmed', notes: 'Stanmore mosque. Used for two events.' },
+    { type: 'Venue', name: 'SJ Clubhouse, Hujjat Harefield', event: 'Dua Night', lead: 'Venue', status: 'confirmed', notes: 'AV pre-installed on site.' },
+    { type: 'Venue', name: 'London Shenley Club', event: 'Mehndi', lead: 'Venue', status: 'confirmed', notes: 'Built-in AV fallback available.' },
+    { type: 'Food', name: 'Nadia Aunty (biryani)', event: 'Gift Packing Night — 20 Apr', lead: 'Nadia Aunty', status: 'confirmed', notes: 'Dinner for Monday gift packing session.' },
   ],
-  nikahProgramme: [
-    ['5:00 PM', 'Opening'],
-    ['5:05 PM', 'Quran'],
-    ['5:12 PM', 'Hadith-e-Kisa'],
-    ['5:25 PM', 'Qaseedah'],
-    ['5:35 PM', 'Lecture'],
-    ['6:00 PM', 'Nikah recitation'],
-    ['6:20 PM', 'Qaseedah'],
-    ['6:25 PM', 'Speech'],
-    ['6:35 PM', 'Qaseedah'],
-    ['6:42 PM', 'Vote of thanks'],
-    ['6:50 PM', 'Ziyarat'],
-    ['7:00 PM', 'Dinner'],
-    ['7:30 PM', 'Handshaking ceremony'],
-    ['8:00 PM', 'Exit']
-  ],
+
   groomTimeline: [
-    ['9:00 AM', 'Wake up and keep the house calm.'],
-    ['9:30–10:30 AM', 'Shower, freshen up, breakfast, settle.'],
-    ['10:30–11:30 AM', 'Soft prep window, outfit checks, flowers, cars, bags.'],
-    ['12:00 PM', 'Start dressing and formal prep.'],
-    ['1:15–1:45 PM', 'Buffer window for delays and fixes.'],
-    ['1:45–2:15 PM', 'Relaxed at-home photos if wanted.'],
-    ['2:15–2:40 PM', 'House send-off / short pre-programme window.'],
-    ['2:40–3:00 PM', 'Final checks only. No new tasks.'],
-    ['3:00 PM', 'Depart Milton Keynes.'],
-    ['4:00–4:30 PM', 'First look.'],
-    ['4:30–4:45 PM', 'Travel to mosque.'],
-    ['4:45 PM', 'Arrival buffer and settle before programme.']
+    ['9:00 AM', 'Wake up. House stays calm. Best man and Jabs arrive.'],
+    ['9:00 AM', 'Barbers — beard trim. Confirm appointment beforehand.'],
+    ['9:30–10:30 AM', 'Shower, breakfast, freshen up. Relaxed pace.'],
+    ['10:30–11:30 AM', 'Soft prep — outfit checks, flowers confirmed, cars loaded, bags done.'],
+    ['12:00 PM', 'Start dressing. Full formal prep begins.'],
+    ['13:15', 'Namaz.'],
+    ['13:30', 'Goor ceremony at home.'],
+    ['13:45–14:00', 'Buffer. Fix anything that needs fixing.'],
+    ['14:15', 'BJ + Shahid Abbas + Jabs depart MK.'],
+    ['15:00', 'Family convoy departs MK.'],
+    ['15:30–16:00', 'First Look.'],
+    ['16:15', 'BJ arrives at mosque.'],
+    ['16:30', 'Family arrives at mosque.'],
+    ['17:00', 'Programme begins.'],
+    ['18:00', 'Nikah recitation.'],
+    ['19:00', 'Dinner.'],
+    ['19:30', 'Handshaking ceremony.'],
+    ['20:00', 'Exit. Travel to Brocket Hall.'],
   ],
-  packing: {
-    outfits: ['Nikah outfit', 'Reception outfit', 'Casual daytime outfit', 'Sunday evening chilled outfit', 'Monday return outfit', 'Nightwear / pyjamas'],
-    accessories: ['Watch', 'Cufflinks', 'Tie / bow tie', 'Pocket square', 'Perfume', 'Hair product'],
-    essentials: ['Phone charger', 'Portable charger', 'Tissues', 'Breath mints', 'Deodorant', 'Comb / brush', 'Lip balm', 'Basic painkillers'],
-    ceremony: ['Boutonniere', 'Family flowers', 'Any gifts / envelopes needed'],
-    notes: ['Pack in labelled sections: Nikah / Reception / Stay / Emergency.', 'Best man or brothers should know where everything is.', 'Try to have the bulk of this packed before Friday night.']
-  }
+
+  groomTasks: [
+    { task: 'Collect tux from Moss Bros Milton Keynes', due: '23–24 April', done: false },
+    { task: 'Final fitment check', due: '23–24 April', done: false },
+    { task: 'Book beard + hair appointment', due: '24 April daytime', done: false },
+    { task: 'Pack full weekend bag (Nikah/Reception/Stay/Emergency sections)', due: '25 April morning', done: false },
+    { task: 'Confirm Mehndi AV setup time with Shahid Ali', due: 'Before 21 April', done: false },
+    { task: 'Confirm Dua Night programme coordinator', due: 'Before 19 April', done: false },
+    { task: 'Book barbers for Nikah morning', due: 'Before 25 April', done: false },
+    { task: 'Confirm Tejani Airbnb / gents off-site plan for Mehndi', due: 'Before 21 April', done: false },
+    { task: 'Message Muhammedali Somji re: carpet collection at Mehndi', due: 'Before 21 April', done: false },
+    { task: 'Buy all Monday breakfast supplies', due: 'By 24 April', done: false },
+    { task: 'Get meat for Mess Up BBQ', due: '23–24 April', done: false },
+    { task: 'Set up all livestreams', due: '24 April daytime', done: false },
+    { task: 'Clean cars', due: '24 April', done: false },
+    { task: 'Fuel up all cars', due: '24 April', done: false },
+    { task: 'Jabs to collect envelopes — tell MT also', due: '25 April AM', done: false },
+    { task: 'Flowers collected before MK departure', due: '25 April AM', done: false },
+  ],
+
+  groomPacking: {
+    outfits: ['Nikah outfit','Reception outfit','Casual daytime outfit','Sunday evening chilled outfit','Monday return outfit','Nightwear / pyjamas'],
+    accessories: ['Watch','Cufflinks','Tie / bow tie','Pocket square','Perfume','Hair product'],
+    essentials: ['Phone charger','Portable charger','Tissues','Breath mints','Deodorant','Comb / brush','Lip balm','Basic painkillers'],
+    ceremony: ['Boutonniere','Family flowers','Envelopes (Jabs holding)','Imam Zamin tray','Coins','Pink tray','Bangles','Gift bags'],
+    notes: ['Pack in labelled sections: Nikah / Reception / Stay / Emergency.','Best man and brothers to know where everything is.','Pack bulk of this before Friday night (Mess Up).','Nothing left in MK when you drive away on Saturday.'],
+  },
+
+  groomNotes: [
+    'Moss Bros MK — tux collection and final fitments must happen 23–24 April. Book this now.',
+    'Hair + beard appointment needed 24 April daytime. Barbers on Nikah morning (9 AM).',
+    'Groom private timeline on Nikah day: best man owns the clock. You just show up and feel good.',
+    'Hug order post Nikah: Sheikh → Papa → MT → Dada → Nana → HT Mamujaan → Bha & MH → Sameer → Asif → Mamujaan → Motapapa → Nishat Masa → Bengali Chacha (announced by Shabar Kassam).',
+    'Brocket Hall: pack Nikah / Reception / Stay / Emergency in separate labelled sections.',
+    'Mehndi: Tejani Airbnb placeholder — confirm where gents are holding during the event.',
+    'House rule on Nikah morning: only BJ, best man (Shahid Abbas), Jabs, MH, Papa, Mum, grandparents in the house.',
+    'Hard stop rule: no new tasks after 2:40 PM on Nikah day.',
+  ],
 };
 
-const tabs = [
-  ['dashboard','Dashboard'],
-  ['timeline','Master Timeline'],
-  ['events','Events'],
-  ['people','People'],
-  ['transport','Transport'],
-  ['vendors','Vendors'],
-  ['photos','Photo Lists'],
-  ['groom','Groom Timeline'],
-  ['packing','Packing Checklist'],
-  ['print','Print Pack']
+/* ============================================================
+   NAV / ROUTING
+   ============================================================ */
+const TABS = [
+  { id: 'dashboard', label: 'Dashboard' },
+  { id: 'timeline',  label: 'Master Timeline' },
+  { id: 'events',    label: 'Events' },
+  { id: 'people',    label: 'People' },
+  { id: 'transport', label: 'Transport' },
+  { id: 'vendors',   label: 'Vendors' },
+  { id: 'print',     label: 'Print Pack' },
+  { id: 'groom',     label: '🔐 Groom', cls: 'groom-tab' },
 ];
 
-const nav = document.getElementById('nav');
-const pages = document.querySelectorAll('.page');
-
-tabs.forEach(([id,label], index) => {
+const nav = document.getElementById('main-nav');
+TABS.forEach(t => {
   const btn = document.createElement('button');
-  btn.className = 'tab' + (index === 0 ? ' active' : '');
-  btn.textContent = label;
-  btn.onclick = () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    pages.forEach(p => p.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-  };
+  btn.className = 'tab' + (t.cls ? ' ' + t.cls : '');
+  btn.textContent = t.label;
+  btn.dataset.page = t.id;
+  btn.onclick = () => showPage(t.id, btn);
   nav.appendChild(btn);
 });
 
-function eventCard(e) {
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+// Activate dashboard tab on load
+document.querySelector('.tab[data-page="dashboard"]').classList.add('active');
+
+/* ============================================================
+   COUNTDOWN LOGIC
+   ============================================================ */
+function getCountdown(targetDateISO, targetTimeStr) {
+  const now = new Date();
+  // Build target from ISO date + time string like "5:00 PM"
+  const [datePart] = targetDateISO.split('T');
+  let target;
+  if (targetTimeStr && targetTimeStr !== 'TBC') {
+    target = new Date(datePart + 'T' + to24h(targetTimeStr));
+  } else {
+    target = new Date(datePart + 'T12:00:00');
+  }
+  const diff = target - now;
+  if (diff <= 0) return null; // past
+  const days    = Math.floor(diff / 86400000);
+  const hours   = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  return { days, hours, minutes, diff };
+}
+
+function to24h(timeStr) {
+  if (!timeStr || timeStr === 'TBC') return '12:00:00';
+  const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!match) return '12:00:00';
+  let h = parseInt(match[1]);
+  const m = match[2];
+  const ampm = match[3].toUpperCase();
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  return `${String(h).padStart(2,'0')}:${m}:00`;
+}
+
+function countdownHTML(cd) {
+  if (!cd) return '<div class="badge success">Complete / Past</div>';
   return `
-    <div class="item">
-      <div class="section-title">
-        <strong>${e.name}</strong>
-        <span class="badge ${e.status.includes('Needs') ? 'warning' : ''}">${e.status}</span>
-      </div>
-      <div class="small">${e.date} · ${e.venue}</div>
-      <div style="margin-top:8px">
-        <span class="badge">${e.type}</span>
-        <span class="badge">Internal: ${e.internalStart}</span>
-        <span class="badge">Public: ${e.publicStart}</span>
-      </div>
-      <div style="margin-top:10px">${e.notes}</div>
-      <div class="small" style="margin-top:8px">Groom location: ${e.groomLocation}</div>
+    <div class="countdown-wrap">
+      <div class="countdown-unit"><div class="countdown-num">${cd.days}</div><div class="countdown-label">Days</div></div>
+      <div class="countdown-unit"><div class="countdown-num">${cd.hours}</div><div class="countdown-label">Hrs</div></div>
+      <div class="countdown-unit"><div class="countdown-num">${cd.minutes}</div><div class="countdown-label">Min</div></div>
     </div>
   `;
 }
 
+function getNextEvent() {
+  const now = new Date();
+  for (const e of DATA.events) {
+    const eventDate = new Date(e.dateISO + 'T23:59:00');
+    if (eventDate >= now) return e;
+  }
+  return DATA.events[DATA.events.length - 1];
+}
+
+/* ============================================================
+   RENDER: DASHBOARD
+   ============================================================ */
 function renderDashboard() {
-  const totalEvents = data.events.length;
-  const openTasks = data.tasks.filter(t => t.status === 'Open').length;
-  const vendorCount = data.vendors.length;
-  const transportFlows = data.transport.length;
+  const next = getNextEvent();
+  const cd = getCountdown(next.dateISO, next.publicStart);
+  const isToday = next.dateISO === new Date().toISOString().split('T')[0];
 
-  document.getElementById('dashboard').innerHTML = `
-    <div class="page-intro">Central command view across the full wedding week. This is the high-level operational layer, with placeholder structure added for the remaining events so you can now build forward instead of rebuilding later.</div>
+  const calloutClass = isToday ? 'callout-live' : (cd && cd.days < 3 ? 'callout-urgent' : 'callout');
+  const statusPill = isToday
+    ? '<span class="badge" style="background:rgba(107,138,111,0.2);color:#3a6b3e;border-color:rgba(107,138,111,0.3)">● Live / Today</span>'
+    : `<span class="badge champagne">${cd ? `In ${cd.days}d ${cd.hours}h` : 'Past'}</span>`;
+
+  const upcomingEvents = DATA.events.filter(e => new Date(e.dateISO) >= new Date()).slice(0, 4);
+
+  document.getElementById('page-dashboard').innerHTML = `
+    <p class="page-intro">Command view for the wedding week. High-signal only — next event, countdown, departure anchor, and today's focus.</p>
+
     <div class="grid">
-      <div class="card span-3"><h2>Events</h2><div class="kpi">${totalEvents}</div><div class="small">Tracked across wedding week</div></div>
-      <div class="card span-3"><h2>Open Tasks</h2><div class="kpi">${openTasks}</div><div class="small">Pre-wedding checklist items</div></div>
-      <div class="card span-3"><h2>Vendors</h2><div class="kpi">${vendorCount}</div><div class="small">Current known vendor lines</div></div>
-      <div class="card span-3"><h2>Transport Flows</h2><div class="kpi">${transportFlows}</div><div class="small">Major movement paths identified</div></div>
-
-      <div class="card span-8">
-        <h2>Next Critical Timing</h2>
-        <div class="callout"><strong>${data.dashboard.nextCritical}</strong><br><span class="small">${data.dashboard.currentFocus}</span></div>
-        <div class="list" style="margin-top:16px;">
-          <div class="item"><strong>Groom status</strong><br><span class="small">${data.dashboard.groomStatus}</span></div>
-          <div class="item"><strong>Current site logic</strong><br><span class="small">Dashboard + timeline + event scaffolding restored. Groom and packing modules preserved and expanded.</span></div>
+      <!-- Next Event Card -->
+      <div class="col-8">
+        <div class="next-event-card">
+          <div class="label" style="margin-bottom:8px">Next Event</div>
+          <div class="next-event-name">${next.name}</div>
+          <div class="next-event-meta">${next.date} · ${next.venue}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+            ${statusPill}
+            <span class="badge champagne">Public: ${next.publicStart}</span>
+            <span class="badge">Internal: ${next.internalArrival}</span>
+          </div>
+          <div class="${calloutClass}" style="margin-bottom:16px">
+            <div class="label" style="margin-bottom:4px">Departure Anchor</div>
+            <strong>${next.departureAnchor}</strong>
+          </div>
+          <div class="label" style="margin-bottom:8px">Time Until ${isToday ? 'Event (Live)' : 'Event'}</div>
+          ${cd ? countdownHTML(cd) : '<span class="badge success">Happening Now / Past</span>'}
         </div>
       </div>
 
-      <div class="card span-4">
-        <h2>Private Notes</h2>
-        <div class="list">
-          ${data.dashboard.privateNotes.map(n => `<div class="item"><span class="small">${n}</span></div>`).join('')}
+      <!-- Status Panel -->
+      <div class="col-4">
+        <div class="card" style="height:100%">
+          <h2 class="card-title">Current Status</h2>
+          <div class="item-row"><span class="label" style="margin-bottom:4px">Operational Phase</span><strong>Wedding Week Planning</strong></div>
+          <div class="item-row" style="margin-top:10px"><span class="label" style="margin-bottom:4px">Days to Nikah</span>
+            <strong class="serif" style="font-size:26px;color:var(--sage-deep)">${Math.max(0, Math.floor((DATA.weddingDate - new Date()) / 86400000))}</strong>
+          </div>
+          <div class="item-row" style="margin-top:10px"><span class="label" style="margin-bottom:4px">Events in Week</span><strong>${DATA.events.length} events mapped</strong></div>
         </div>
       </div>
 
-      <div class="card span-6">
-        <h2>Immediate Focus Events</h2>
-        <div class="list">
-          ${data.events.filter(e => ['Mehndi','Nikah','Reception'].includes(e.name)).map(eventCard).join('')}
+      <!-- Today's Focus -->
+      <div class="col-12">
+        <div class="card">
+          <h2 class="card-title">Today's Focus</h2>
+          <div class="grid" style="gap:12px">
+            <div class="col-3">
+              <div class="callout"><strong>🎩 Groom</strong><br><span class="small muted">Finalise transport. Confirm Moss Bros collection date. Book barbers.</span></div>
+            </div>
+            <div class="col-3">
+              <div class="callout"><strong>🚗 Transport</strong><br><span class="small muted">Lock car allocations for Dua Night. Confirm Mehndi off-site plan.</span></div>
+            </div>
+            <div class="col-3">
+              <div class="callout"><strong>📋 Ops</strong><br><span class="small muted">Assign Dua Night programme coordinator and food liaison.</span></div>
+            </div>
+            <div class="col-3">
+              <div class="callout"><strong>📦 Logistics</strong><br><span class="small muted">Ateqa Aunty to send stationery list to Mum. Papa check trays and material.</span></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="card span-6">
-        <h2>Critical Task Stack</h2>
-        <table class="table">
-          <tr><th>Task</th><th>Due</th><th>Owner</th></tr>
-          ${data.tasks.map(t => `<tr><td>${t.name}</td><td>${t.due}</td><td>${t.owner}</td></tr>`).join('')}
-        </table>
+      <!-- Upcoming Events Strip -->
+      <div class="col-12">
+        <div class="card">
+          <h2 class="card-title">Wedding Week Overview</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+            ${DATA.events.map(e => {
+              const isToday = e.dateISO === new Date().toISOString().split('T')[0];
+              const isPast  = new Date(e.dateISO) < new Date() && !isToday;
+              return `
+                <div style="background:var(--panel-solid);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px;${isToday?'border-color:var(--sage);box-shadow:0 0 0 2px rgba(138,163,141,0.2)':''}">
+                  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px">${e.date.split(' ').slice(0,3).join(' ')}</div>
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;${isPast?'opacity:0.5':''}">${e.name}</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:3px">${e.venue}</div>
+                  <div style="margin-top:8px">
+                    <span class="badge ${isPast?'dark':isToday?'success':'champagne'}">${isPast?'Complete':isToday?'Today':'Upcoming'}</span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
       </div>
     </div>
   `;
 }
 
+/* ============================================================
+   RENDER: MASTER TIMELINE
+   ============================================================ */
 function renderTimeline() {
-  const rows = [];
-  data.events.forEach(e => {
-    rows.push(`
-      <div class="timeline-row">
-        <div class="time">${e.date.split(' ').slice(0,3).join(' ')}</div>
-        <div>
-          <strong>${e.name}</strong><br>
-          <span class="small">${e.venue}</span><br>
-          <span class="small">Internal: ${e.internalStart} · Public: ${e.publicStart}</span>
-        </div>
-      </div>
-    `);
-  });
-
-  document.getElementById('timeline').innerHTML = `
+  document.getElementById('page-timeline').innerHTML = `
+    <p class="page-intro">Chronological overview of the full wedding week. Dates, venues, and internal timings at a glance.</p>
     <div class="card">
-      <div class="section-title">
-        <h2>Master Timeline</h2>
-        <span class="small">Wedding week stitched into one view</span>
-      </div>
-      ${rows.join('')}
-    </div>
-    <div class="grid" style="margin-top:20px;">
-      <div class="card span-6">
-        <h3>Nikah Programme</h3>
-        ${data.nikahProgramme.map(([time, item]) => `<div class="timeline-row"><div class="time">${time}</div><div>${item}</div></div>`).join('')}
-      </div>
-      <div class="card span-6">
-        <h3>Pre-Wedding Task Timeline</h3>
-        ${data.tasks.map(t => `<div class="timeline-row"><div class="time">${t.due}</div><div><strong>${t.name}</strong><br><span class="small">Owner: ${t.owner}</span></div></div>`).join('')}
-      </div>
+      <h2 class="card-title">Wedding Week — Master Timeline</h2>
+      ${DATA.events.map((e, i) => `
+        <div class="tl-row" style="${i===0?'padding-top:0':''}">
+          <div class="tl-time">${e.date.split(' ').slice(0,3).join(' ')}</div>
+          <div class="tl-content">
+            <strong>${e.name}</strong>
+            <div class="small muted">${e.venue}${e.venueAddress ? ' · ' + e.venueAddress : ''}</div>
+            <div class="small" style="margin-top:4px">
+              Public: <strong>${e.publicStart}</strong> &nbsp;·&nbsp; Internal arrival: <strong>${e.internalArrival}</strong>
+            </div>
+            ${e.departureAnchor && e.departureAnchor !== 'N/A — home event' ? `<div class="small muted" style="margin-top:2px">Departure: ${e.departureAnchor}</div>` : ''}
+            <div style="margin-top:6px">${['tbc','placeholder'].some(s=>e.statusLabel.toLowerCase().includes(s))?`<span class="badge warning">${e.statusLabel}</span>`:`<span class="badge">${e.statusLabel}</span>`}</div>
+          </div>
+        </div>
+      `).join('')}
     </div>
   `;
 }
 
+/* ============================================================
+   RENDER: EVENTS (Accordion)
+   ============================================================ */
 function renderEvents() {
-  document.getElementById('events').innerHTML = `
-    <div class="page-intro">All currently known events, including placeholders for the remaining days so the architecture is built now and refined later.</div>
-    <div class="grid">
-      ${data.events.map(e => `<div class="card span-6">${eventCard(e)}</div>`).join('')}
+  const statusColor = s => {
+    if (s === 'complete') return 'status-complete';
+    if (s === 'live') return 'status-today';
+    if (s === 'tbc') return 'status-tbc';
+    return 'status-upcoming';
+  };
+
+  const html = DATA.events.map(e => `
+    <div class="accordion-item" id="accordion-${e.id}">
+      <div class="accordion-header" onclick="toggleAccordion('${e.id}')">
+        <div>
+          <div class="accordion-title">${e.name}</div>
+          <div class="accordion-date">${e.date} · ${e.venue}</div>
+          <div class="accordion-meta">
+            <span class="badge ${statusColor(e.status)}">${e.statusLabel}</span>
+            <span class="badge champagne">${e.type}</span>
+            <span class="badge">Public: ${e.publicStart}</span>
+          </div>
+        </div>
+        <div class="accordion-chevron">▾</div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+
+          <!-- Overview -->
+          <div class="event-section">
+            <div class="event-section-title">Overview</div>
+            <div class="event-grid">
+              <div class="event-stat"><span class="label">Public Start</span><strong>${e.publicStart}</strong></div>
+              <div class="event-stat"><span class="label">Internal Arrival</span><strong>${e.internalArrival}</strong></div>
+              <div class="event-stat"><span class="label">Departure Anchor</span><strong>${e.departureAnchor}</strong></div>
+              <div class="event-stat"><span class="label">Groom Role</span><strong>${e.groomRole}</strong></div>
+            </div>
+            <div style="margin-top:12px;font-size:14px;line-height:1.6;color:var(--muted)">${e.overview}</div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="event-section">
+            <div class="event-section-title">Key Timings</div>
+            ${e.timeline.map(([time, item]) => `
+              <div class="tl-row">
+                <div class="tl-time">${time}</div>
+                <div class="tl-content">${item}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Transport -->
+          <div class="event-section">
+            <div class="event-section-title">Transport</div>
+            <div class="callout" style="margin-bottom:12px">
+              <strong>${e.transport.route}</strong><br>
+              <span class="small muted">${e.transport.departureNote}</span>
+            </div>
+            ${e.transport.cars.length > 0 ? `
+              <div class="car-grid">
+                ${e.transport.cars.map(c => `
+                  <div class="car-card">
+                    <div class="car-name">🚗 ${c.name}</div>
+                    <div class="car-passengers">${c.passengers || 'Passengers TBC'}</div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+            ${e.transport.passengers && e.transport.passengers !== 'TBC' ? `<div style="margin-top:12px;font-size:13px;color:var(--muted)"><strong>Full passenger list:</strong> ${e.transport.passengers}</div>` : ''}
+            ${e.transport.returnNote ? `<div style="margin-top:10px;font-size:13px;color:var(--muted)"><strong>Return:</strong> ${e.transport.returnNote}</div>` : ''}
+          </div>
+
+          <!-- Items / Packing -->
+          ${e.items.length > 0 ? `
+            <div class="event-section">
+              <div class="event-section-title">Items / Packing</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                ${e.items.map(item => item.startsWith('—') ? `<div style="width:100%;margin-top:6px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sage-deep)">${item}</div>` : `<span class="badge">${item}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Vendors -->
+          ${e.vendors.length > 0 ? `
+            <div class="event-section">
+              <div class="event-section-title">Vendors / Ops Notes</div>
+              ${e.vendors.map(v => `
+                <div class="item-row">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+                    <strong>${v.name}</strong>
+                    <span class="badge">${v.type}</span>
+                  </div>
+                  <div class="small muted" style="margin-top:4px">${v.notes}</div>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <!-- Key People -->
+          ${e.people.length > 0 ? `
+            <div class="event-section">
+              <div class="event-section-title">Key People</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                ${e.people.map(p => `<span class="badge champagne">${p}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Open Questions -->
+          ${e.openQuestions.length > 0 ? `
+            <div class="event-section">
+              <div class="event-section-title">Open Questions / Missing Info <span class="badge warning">${e.openQuestions.length} open</span></div>
+              ${e.openQuestions.map(q => `
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px">
+                  <span style="color:var(--warning);font-size:16px;flex-shrink:0;margin-top:-1px">⚠</span>
+                  <span>${q}</span>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+        </div>
+      </div>
     </div>
+  `).join('');
+
+  document.getElementById('page-events').innerHTML = `
+    <p class="page-intro">Full event logistics. Tap any event to expand the complete operational detail — transport, items, vendors, key people, and open questions.</p>
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="filter-btn active" onclick="expandAll()">Expand All</button>
+      <button class="filter-btn" onclick="collapseAll()">Collapse All</button>
+    </div>
+    ${html}
   `;
 }
 
+function toggleAccordion(id) {
+  const el = document.getElementById('accordion-' + id);
+  el.classList.toggle('open');
+}
+function expandAll() {
+  document.querySelectorAll('.accordion-item').forEach(el => el.classList.add('open'));
+}
+function collapseAll() {
+  document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('open'));
+}
+
+/* ============================================================
+   RENDER: PEOPLE
+   ============================================================ */
 function renderPeople() {
-  document.getElementById('people').innerHTML = `
-    <div class="grid">
-      <div class="card span-7">
-        <h2>Key People</h2>
-        <div class="list">
-          ${data.people.map(p => `<div class="item"><strong>${p.name}</strong> <span class="badge">${p.role}</span><br><span class="small">${p.detail}</span></div>`).join('')}
-        </div>
-      </div>
-      <div class="card span-5">
-        <h2>Known Nikah Morning House List</h2>
-        <div class="list">
-          ${['Miqdad','Best man','Ali','Mohammed Hadi','Dad','Mum','Grandparents'].map(p => `<div class="item">${p}</div>`).join('')}
-        </div>
-      </div>
+  const allTags = [...new Set(DATA.people.flatMap(p => p.tags))].sort();
+
+  let activeFilter = 'all';
+
+  const filterBar = `
+    <div class="filter-bar" id="people-filters">
+      <button class="filter-btn active" onclick="filterPeople('all', this)">All</button>
+      ${allTags.map(t => `<button class="filter-btn" onclick="filterPeople('${t}', this)">${t}</button>`).join('')}
     </div>
+  `;
+
+  const cards = DATA.people.map(p => `
+    <div class="person-card" data-tags="${p.tags.join(',')}">
+      <div class="person-name">${p.name}</div>
+      <div class="person-role">${p.role}</div>
+      ${p.detail ? `<div class="person-detail">${p.detail}</div>` : ''}
+      <div class="person-tags">${p.tags.map(t => `<span class="badge">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('page-people').innerHTML = `
+    <p class="page-intro">All people across the wedding week. Filter by role or category. Cards are editable — relationship details will be refined later.</p>
+    ${filterBar}
+    <div class="people-grid" id="people-grid">${cards}</div>
   `;
 }
 
+function filterPeople(tag, btn) {
+  document.querySelectorAll('#people-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#people-grid .person-card').forEach(card => {
+    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+/* ============================================================
+   RENDER: TRANSPORT
+   ============================================================ */
 function renderTransport() {
-  document.getElementById('transport').innerHTML = `
-    <div class="card">
-      <h2>Transport Planner</h2>
-      <table class="table">
-        <tr><th>Event</th><th>Flow</th><th>Status</th><th>Notes</th></tr>
-        ${data.transport.map(t => `<tr><td>${t.event}</td><td>${t.flow}</td><td>${t.status}</td><td>${t.notes}</td></tr>`).join('')}
-      </table>
+  const statusColor = s => ({
+    tbc: 'warning', partial: 'champagne', complex: 'danger', defined: 'success'
+  }[s] || '');
+
+  const events = DATA.transport.map(t => `
+    <div class="transport-event">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <div>
+          <div class="transport-event-title">${t.event}</div>
+          <div class="small muted">${t.date}</div>
+        </div>
+        <span class="badge ${statusColor(t.status)}">${t.statusLabel}</span>
+      </div>
+
+      <div class="transport-flow">
+        ${t.route.map((node, i) => `
+          <div class="flow-node">${node}</div>
+          ${i < t.route.length - 1 ? '<span class="flow-arrow">→</span>' : ''}
+        `).join('')}
+      </div>
+
+      <div style="margin:10px 0;padding:10px 14px;background:rgba(216,199,161,0.12);border:1px solid var(--line);border-radius:10px;font-size:13px">
+        <strong>Departure anchor:</strong> ${t.departure}
+      </div>
+
+      ${t.cars.length > 0 ? `
+        <div class="car-grid">
+          ${t.cars.map(c => `
+            <div class="car-card">
+              <div class="car-name">🚗 ${c.name}</div>
+              <div class="car-passengers">${c.passengers}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${t.notes ? `<div style="margin-top:12px;font-size:13px;color:var(--muted)">${t.notes}</div>` : ''}
     </div>
-    <div class="grid" style="margin-top:20px;">
-      <div class="card span-6">
-        <h3>Transport Logic Notes</h3>
-        <div class="list">
-          <div class="item">Final vehicle allocation waits until hotels, international guests and available cars are confirmed.</div>
-          <div class="item">Mehndi is the first true split-movement event and will drive later allocation logic.</div>
-          <div class="item">Nikah needs luggage + outfit movement built into final plan, not just passenger movements.</div>
+  `).join('');
+
+  document.getElementById('page-transport').innerHTML = `
+    <p class="page-intro">Transport overview by event — departure anchors, route flows, car assignments, and passenger planning.</p>
+
+    <div class="grid">
+      <div class="col-8">
+        <div class="card">
+          <h2 class="card-title">Event Movement Flows</h2>
+          ${events}
         </div>
       </div>
-      <div class="card span-6">
-        <h3>Known Departure Anchors</h3>
-        <div class="list">
-          <div class="item"><strong>Mehndi</strong><br><span class="small">Leave Milton Keynes around 5:00–5:15 PM</span></div>
-          <div class="item"><strong>Nikah</strong><br><span class="small">Leave Milton Keynes around 3:00–3:15 PM</span></div>
-          <div class="item"><strong>Shadi Majlis / Dua Night</strong><br><span class="small">Departure windows still flexible and car-based</span></div>
+
+      <div class="col-4">
+        <div class="card" style="margin-bottom:20px">
+          <h2 class="card-title">Key Departure Anchors</h2>
+          <div class="item-row"><strong>Dua Night</strong><div class="small muted">Leave MK 3:30 PM (Sun 19 Apr)</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Mehndi — Papa haul</strong><div class="small muted">Papa departs 4:00 PM (Tue 21 Apr)</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Mehndi — main convoy</strong><div class="small muted">Leave MK 5:00–5:15 PM (Tue 21 Apr)</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Nikah — groom</strong><div class="small muted">BJ + best man + Jabs: 2:15 PM (Sat 25 Apr)</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Nikah — family</strong><div class="small muted">Family convoy: 3:00 PM (Sat 25 Apr)</div></div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Fleet Overview</h2>
+          <div class="item-row"><strong>Mustang</strong><div class="small muted">Groom / Papa — primary car. Mehndi + Nikah.</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Nissan</strong><div class="small muted">Multi-event workhorse. All major events.</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Rental 9-seater</strong><div class="small muted">Mehndi + Nikah. Large group capacity.</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Nishat Masa</strong><div class="small muted">Available from Monday 20 Apr.</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Mamujaan</strong><div class="small muted">Nikah + Reception only.</div></div>
+          <div class="item-row" style="margin-top:10px"><strong>Bengali Chacha</strong><div class="small muted">Nikah + Reception. Also called Muntazir Uncle.</div></div>
         </div>
       </div>
     </div>
   `;
 }
 
+/* ============================================================
+   RENDER: VENDORS
+   ============================================================ */
 function renderVendors() {
-  document.getElementById('vendors').innerHTML = `
+  const statusColor = s => ({ confirmed: 'success', tbc: 'warning', action: 'danger' }[s] || '');
+  const statusLabel = s => ({ confirmed: 'Confirmed', tbc: 'TBC', action: 'Action Needed' }[s] || s);
+
+  document.getElementById('page-vendors').innerHTML = `
+    <p class="page-intro">Current vendor and operational supplier list. Summary view only — a dedicated vendor sheet will be built separately.</p>
     <div class="card">
-      <h2>Vendor Operations</h2>
+      <h2 class="card-title">Vendors & Suppliers</h2>
       <table class="table">
-        <tr><th>Type</th><th>Name</th><th>Coverage</th><th>Lead</th><th>Notes</th></tr>
-        ${data.vendors.map(v => `<tr><td>${v.type}</td><td>${v.name}</td><td>${v.coverage}</td><td>${v.lead}</td><td>${v.notes}</td></tr>`).join('')}
+        <thead><tr><th>Type</th><th>Name</th><th>Event</th><th>Lead</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          ${DATA.vendors.map(v => `
+            <tr>
+              <td><span class="badge">${v.type}</span></td>
+              <td><strong>${v.name}</strong></td>
+              <td>${v.event}</td>
+              <td>${v.lead}</td>
+              <td><span class="badge ${statusColor(v.status)}">${statusLabel(v.status)}</span></td>
+              <td class="small muted">${v.notes}</td>
+            </tr>
+          `).join('')}
+        </tbody>
       </table>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <h2 class="card-title">Vendor Planning Notes</h2>
+      <div class="item-row">A full vendor tracking sheet will be built separately with numbers, contact details, payments and confirmations.</div>
+      <div class="item-row" style="margin-top:10px">Flowers vendor is currently unassigned — this is the most urgent open vendor item.</div>
+      <div class="item-row" style="margin-top:10px">Moss Bros tux collection and fitment dates (23–24 April) need to be locked in immediately.</div>
     </div>
   `;
 }
 
-function renderPhotos() {
-  document.getElementById('photos').innerHTML = `
+/* ============================================================
+   RENDER: PRINT PACK
+   ============================================================ */
+function renderPrint() {
+  document.getElementById('page-print').innerHTML = `
     <div class="card">
-      <h2>Photo Lists</h2>
-      <table class="table">
-        <tr><th>Event</th><th>Item</th><th>Status</th></tr>
-        ${data.photos.map(p => `<tr><td>${p.event}</td><td>${p.item}</td><td>${p.status}</td></tr>`).join('')}
-      </table>
-    </div>
-  `;
-}
-
-function renderGroom() {
-  document.getElementById('groom').innerHTML = `
-    <div class="grid">
-      <div class="card span-7">
-        <h2>Nikah Groom Timeline</h2>
-        ${data.groomTimeline.map(([time, task]) => `<div class="timeline-row"><div class="time">${time}</div><div>${task}</div></div>`).join('')}
+      <div class="placeholder-block">
+        <div class="placeholder-icon">🖨</div>
+        <h3>Print Pack</h3>
+        <p class="small muted" style="max-width:400px;margin:0 auto">Placeholder only. We'll decide which documents get printed, in what format, and at what stage. Likely candidates: master timeline, Nikah day timeline, transport summary, and critical task sheet.</p>
       </div>
-      <div class="card span-5">
-        <h2>Control Rules</h2>
-        <div class="list">
-          <div class="item"><strong>Timeline owner</strong><br><span class="small">Best man</span></div>
-          <div class="item"><strong>Execution support</strong><br><span class="small">Brothers + immediate family</span></div>
-          <div class="item"><strong>Hard rule</strong><br><span class="small">No new activities after 2:40 PM on Nikah day</span></div>
-          <div class="item"><strong>Morning tone</strong><br><span class="small">Chilled, controlled, minimal people in the house</span></div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   RENDER: GROOM (Password protected)
+   ============================================================ */
+const GROOM_PASSWORD = 'Miqandhanna';
+let groomUnlocked = false;
+
+function groomUnlock() {
+  const val = document.getElementById('groom-pw').value;
+  if (val === GROOM_PASSWORD) {
+    groomUnlocked = true;
+    document.getElementById('groom-lock').style.display = 'none';
+    document.getElementById('groom-inner').classList.add('unlocked');
+    renderGroomInner();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('groom-pw').value = '';
+  }
+}
+
+function renderGroomInner() {
+  const checklist = DATA.groomTasks.map((t, i) => `
+    <li class="g-check-item" id="gtask-${i}" onclick="toggleGroomTask(${i})">
+      <div class="g-check-box" id="gbox-${i}"></div>
+      <span><strong>${t.task}</strong> <span class="g-muted" style="font-size:12px">· ${t.due}</span></span>
+    </li>
+  `).join('');
+
+  const packingSection = (title, items) => `
+    <div style="margin-bottom:20px">
+      <span class="g-label">${title}</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        ${items.map(item => `<span class="g-badge">${item}</span>`).join('')}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('groom-inner').innerHTML = `
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:28px">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:#e8e6e1">Groom Command Centre</div>
+        <div style="color:#888;font-size:13px;margin-top:4px">Private · Miqdad only · BMW meets Apple</div>
+      </div>
+      <div style="background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.22);border-radius:10px;padding:10px 18px;text-align:center">
+        <div style="font-size:32px;font-weight:700;color:#e74c3c;font-variant-numeric:tabular-nums">${Math.max(0, Math.floor((DATA.weddingDate - new Date()) / 86400000))}</div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888">Days to Nikah</div>
+      </div>
+    </div>
+
+    <!-- Private Notes -->
+    <div class="g-card">
+      <div class="g-title">Private Notes</div>
+      ${DATA.groomNotes.map(n => `<div class="g-note">${n}</div>`).join('')}
+    </div>
+
+    <!-- Critical Task Stack -->
+    <div class="g-card">
+      <div class="g-title">Critical Task Stack</div>
+      <ul class="g-checklist">${checklist}</ul>
+    </div>
+
+    <!-- Groom Timeline -->
+    <div class="g-card">
+      <div class="g-title">Nikah Day — Groom Timeline</div>
+      ${DATA.groomTimeline.map(([time, task]) => `
+        <div class="g-tl-row">
+          <div class="g-tl-time">${time}</div>
+          <div class="g-tl-text">${task}</div>
+        </div>
+      `).join('')}
+      <div style="margin-top:16px;padding:12px 14px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.15);border-radius:8px;font-size:13px;color:#aaa">
+        ⛔ Hard rule: no new tasks after 2:40 PM on Nikah day. Best man owns the clock.
+      </div>
+    </div>
+
+    <!-- Packing Checklist -->
+    <div class="g-card">
+      <div class="g-title">Groom Packing Checklist</div>
+      <div style="font-size:12px;color:#888;margin-bottom:16px">Pack in labelled sections: Nikah / Reception / Stay / Emergency. Pack bulk before Mess Up Friday night.</div>
+      <div class="g-grid">
+        <div>
+          ${packingSection('Outfits', DATA.groomPacking.outfits)}
+          ${packingSection('Accessories', DATA.groomPacking.accessories)}
+        </div>
+        <div>
+          ${packingSection('Essentials', DATA.groomPacking.essentials)}
+          ${packingSection('Ceremony Items', DATA.groomPacking.ceremony)}
         </div>
       </div>
-    </div>
-  `;
-}
-
-function renderPacking() {
-  document.getElementById('packing').innerHTML = `
-    <div class="grid">
-      <div class="card span-6">
-        <h2>Outfits</h2>
-        <div class="list">${data.packing.outfits.map(i => `<div class="item">${i}</div>`).join('')}</div>
-      </div>
-      <div class="card span-6">
-        <h2>Accessories</h2>
-        <div class="list">${data.packing.accessories.map(i => `<div class="item">${i}</div>`).join('')}</div>
-      </div>
-      <div class="card span-6">
-        <h2>Essentials Kit</h2>
-        <div class="list">${data.packing.essentials.map(i => `<div class="item">${i}</div>`).join('')}</div>
-      </div>
-      <div class="card span-6">
-        <h2>Ceremony Items</h2>
-        <div class="list">${data.packing.ceremony.map(i => `<div class="item">${i}</div>`).join('')}</div>
-      </div>
-      <div class="card span-12">
-        <h2>Packing Notes</h2>
-        <div class="list">${data.packing.notes.map(i => `<div class="item">${i}</div>`).join('')}</div>
+      <div style="margin-top:16px">
+        ${DATA.groomPacking.notes.map(n => `<div class="g-note">${n}</div>`).join('')}
       </div>
     </div>
-  `;
-}
 
-function renderPrint() {
-  document.getElementById('print').innerHTML = `
-    <div class="card">
-      <h2>Print Pack</h2>
-      <div class="list">
-        <div class="item">Master timeline printable</div>
-        <div class="item">Nikah groom timeline printable</div>
-        <div class="item">Critical task sheet printable</div>
-        <div class="item">Vendor sheet printable</div>
-        <div class="item">Transport summary printable</div>
+    <!-- Nikah Programme -->
+    <div class="g-card">
+      <div class="g-title">Nikah Programme (KSMC Stanmore)</div>
+      ${[
+        ['17:00','Opening'],['17:05','Quran'],['17:12','Hadith-e-Kisa'],
+        ['17:25','Qaseedah'],['17:35','Lecture'],['18:00','Nikah recitation ⭐'],
+        ['18:20','Qaseedah'],['18:25','Speech'],['18:35','Qaseedah'],
+        ['18:42','Vote of thanks'],['18:50','Ziyarat'],
+        ['19:00','Dinner'],['19:30','Handshaking ceremony'],['20:00','Exit'],
+      ].map(([time, item]) => `
+        <div class="g-tl-row">
+          <div class="g-tl-time">${time}</div>
+          <div class="g-tl-text" style="${item.includes('⭐') ? 'color:#e74c3c;font-weight:600' : ''}">${item}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- Hug Order -->
+    <div class="g-card">
+      <div class="g-title">Post-Nikah Hug Order</div>
+      <div class="g-hug-grid">
+        ${['Sheikh','Papa','MT','Dada','Nana','HT Mamujaan','Bha & MH','Sameer','Asif','Mamujaan','Motapapa','Nishat Masa','Bengali Chacha (Shabar Kassam announces)'].map((name,i) => `
+          <div class="g-hug-item">
+            <div class="g-hug-num">${i+1}</div>
+            <span>${name}</span>
+          </div>
+        `).join('')}
       </div>
     </div>
   `;
 }
 
+function toggleGroomTask(i) {
+  const item = document.getElementById('gtask-' + i);
+  const box  = document.getElementById('gbox-' + i);
+  const isDone = box.classList.contains('checked');
+  if (isDone) {
+    box.classList.remove('checked');
+    item.classList.remove('done');
+    item.querySelector('span').style.textDecoration = '';
+  } else {
+    box.classList.add('checked');
+    item.classList.add('done');
+    item.querySelector('span').style.textDecoration = 'line-through';
+    item.querySelector('span').style.opacity = '0.45';
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
 renderDashboard();
 renderTimeline();
 renderEvents();
 renderPeople();
 renderTransport();
 renderVendors();
-renderPhotos();
-renderGroom();
-renderPacking();
 renderPrint();
+
+// Live countdown refresh
+setInterval(() => {
+  if (document.getElementById('page-dashboard').classList.contains('active')) {
+    renderDashboard();
+  }
+}, 60000);
 </script>
 </body>
 </html>
