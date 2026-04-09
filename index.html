@@ -726,6 +726,129 @@ h3.section-head { font-family: 'Cormorant Garamond', serif; font-size: 22px; fon
   .people-grid { grid-template-columns: 1fr; }
   .car-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   PERSON DETAIL MODAL
+   ============================================================ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30,28,24,0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 500;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-panel {
+  background: linear-gradient(160deg, #faf8f3, #f4f0e8);
+  border: 1px solid rgba(255,255,255,0.85);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px rgba(40,50,40,0.22);
+  width: 100%;
+  max-width: 660px;
+  position: relative;
+  overflow: hidden;
+  animation: modal-slide-in 0.22s ease;
+}
+@keyframes modal-slide-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sage), var(--champagne), var(--sage-deep));
+}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 18px;
+  background: rgba(138,163,141,0.12);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.modal-close:hover { background: var(--sage); color: white; border-color: var(--sage); }
+.modal-header {
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.modal-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; }
+.modal-role { font-size: 13px; color: var(--muted); margin-top: 5px; }
+.modal-body { padding: 24px 28px 28px; }
+.modal-section { margin-bottom: 24px; }
+.modal-section:last-child { margin-bottom: 0; }
+.modal-section-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+.task-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.task-row:last-child { border-bottom: none; }
+.task-priority {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.priority-high   { background: var(--danger); }
+.priority-medium { background: var(--warning); }
+.priority-low    { background: var(--sage); }
+.task-event-label {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--sage-deep);
+  margin-bottom: 2px;
+}
+.car-assignment-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.car-assignment-row:last-child { margin-bottom: 0; }
+.car-event-name { font-weight: 600; flex: 1; }
+.car-detail { color: var(--muted); font-size: 12px; }
+.person-card { cursor: pointer; transition: box-shadow 0.18s, transform 0.15s; }
+.person-card:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); }
+.person-card-hint { font-size: 11px; color: var(--sage-deep); margin-top: 10px; font-weight: 600; letter-spacing: 0.05em; }
+
+/* Timeline arrivals */
+.arrival-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+  background: linear-gradient(90deg, rgba(138,163,141,0.06), transparent);
+}
+.arrival-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sage-deep); }
 </style>
 </head>
 <body>
@@ -735,10 +858,21 @@ h3.section-head { font-family: 'Cormorant Garamond', serif; font-size: 22px; fon
      ============================================================ -->
 <div class="header">
   <div class="header-top">
-    <h1>Miqdad &amp; Hanna &nbsp;<em>Wedding Ops Hub</em></h1>
+    <h1>Stone &amp; Sage &nbsp;<em>Wedding Ops Hub</em></h1>
     <span class="header-sub">Internal Operations · Family Use Only</span>
   </div>
   <nav class="nav" id="main-nav"></nav>
+</div>
+
+<!-- ============================================================
+     PERSON DETAIL MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="person-modal" onclick="closePersonModal(event)">
+  <div class="modal-panel" id="person-modal-panel">
+    <button class="modal-close" onclick="closePersonModalBtn()">✕</button>
+    <div class="modal-header" id="person-modal-header"></div>
+    <div class="modal-body" id="person-modal-body"></div>
+  </div>
 </div>
 
 <!-- ============================================================
@@ -846,13 +980,13 @@ const DATA = {
         route: 'Milton Keynes → Hujjat Harefield → Return to MK',
         departureNote: 'Leave MK 3:30 PM latest. ~75 min journey.',
         cars: [
-          { name: 'Car 1 – Seat', note: '' },
-          { name: 'Car 2 – Nissan', note: '' },
-          { name: 'Car 3 – LR', note: '' },
-          { name: 'Car 4 – TBC', note: '' },
+          { name: 'Car 1 – Seat', note: 'BJ, Bha, MH, Salman, Zayn' },
+          { name: 'Car 2 – Nissan', note: 'Papa, Dada, Nana, Motapapa' },
+          { name: 'Car 3 – LR', note: 'Muntazir Uncle, AJ Sadak, Hasnain Kaka' },
+          { name: 'Car 4 – TBC', note: 'Mamujaan, Husayn' },
         ],
-        passengers: 'BJ, Papa, Muntazir Uncle, Mamujaan, Bha, Dada, AJ Sadak, Husayn, MH, Nana, Hasnain Kaka, Salman, Motapapa, Zayn',
-        returnNote: 'Return to MK post programme',
+        passengers: 'BJ, Bha, MH, Salman, Zayn · Papa, Dada, Nana, Motapapa · Muntazir Uncle, AJ Sadak, Hasnain Kaka · Mamujaan, Husayn',
+        returnNote: 'Return to MK post programme — same car groupings',
       },
       people: ['BJ','Papa','Muntazir Uncle','Mamujaan','Bha','Dada','AJ Sadak','Husayn','MH','Nana','Hasnain Kaka','Salman','Motapapa','Zayn'],
       items: [],
@@ -865,6 +999,40 @@ const DATA = {
         'Assign internal food liaison',
         'Finalise car allocations and passenger groupings',
         'Confirm programme end time',
+      ],
+    },
+    {
+      id: 'gift-packing',
+      name: 'Gift Packing & Arrivals Evening',
+      date: 'Monday 20 April 2026',
+      dateISO: '2026-04-20',
+      venue: 'Somji Manzil, Milton Keynes',
+      venueAddress: 'Home',
+      type: 'Family Evening — Internal',
+      publicStart: '6:00 PM',
+      internalArrival: 'Khalajaan + Nishat Masa arriving during day',
+      departureAnchor: 'N/A — home event',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Khalajaan and Nishat Masa arrive. Evening gift packing session at home from 6:00 PM. Dinner by Nadia Aunty — biryani.',
+      overview: 'Khalajaan and Nishat Masa arrive in MK. Gift packing session in the evening from 6:00 PM. Dinner by Nadia Aunty (biryani). All immediate and extended family present who are already in MK. Papa to check material and cloth for trays. Ateqa Aunty to send stationery list to Mum in advance. Sort fruit.',
+      groomRole: 'Present. Help as needed.',
+      timeline: [
+        ['Daytime', 'Khalajaan + Nishat Masa arrive in MK'],
+        ['6:00 PM', 'Gift packing session begins'],
+        ['Evening', 'Dinner — Nadia Aunty biryani'],
+      ],
+      transport: { route: 'N/A — home event', departureNote: 'Khalajaan + Nishat Masa travelling to MK independently', cars: [], passengers: '', returnNote: '' },
+      people: ['BJ','Bha','MH','Mum','Papa','Dada','Nana','Nani','Motapapa','Motima','Fufijaan','Khalajaan','Nishat Masa','Ateqa Aunty','Muntazir Uncle','Mamijaan','Mamujaan','Husayn'],
+      items: ['Stationery (Ateqa Aunty to send list to Mum)','Trays (Papa to check material and cloth)','Fruit (to be sorted)','All gift items to be assembled'],
+      vendors: [
+        { type: 'Food', name: 'Nadia Aunty', notes: 'Cooking biryani for the evening.' },
+      ],
+      openQuestions: [
+        'Ateqa Aunty to send stationery list to Mum before Monday',
+        'Papa to check material and cloth for trays',
+        'Sort fruit',
+        'Confirm all gift items are ready and assembled',
       ],
     },
     {
@@ -897,13 +1065,17 @@ const DATA = {
         route: 'MK → Shenley Club (drop) → Tejani Airbnb TBC (hold) → Shenley Club (pickup) → Homes/Hotels/MK',
         departureNote: 'Leave MK 5:00–5:15 PM. Papa goes at 4:00 PM with haul. Approx 60–75 min journey.',
         cars: [
-          { name: 'Car 1 – Mustang', note: 'BJ, Papa' },
-          { name: 'Car 2 – Nissan', note: 'Fufijaan, Khalajaan, Nani + Gift' },
-          { name: 'Car 3 – Rental 9-seater', note: 'Motima, Ateqa Aunty, Hannah, Masuma Govani + kids' },
-          { name: 'Car 4 – Nishat Masa', note: 'Mamijaan / Zainab Kaki + Gift' },
+          { name: 'Car 1 – Mustang (Drive)', note: 'BJ, Mum, Nani' },
+          { name: 'Car 2 – Nissan (Drive)', note: 'Papa + Gifts (x4)' },
+          { name: 'Car 3 – Rental 9-seater (Drive)', note: 'Motapapa, Fufijaan, Mamijaan, Motima, Ateqa Aunty, Hannah, Masuma Govani, Govani Kid 1, Govani Kid 2' },
+          { name: 'Car 4 – Nishat Masa (Drive)', note: 'Nishat Masa, Khalajaan, Zainab Kaki' },
+          { name: 'Car 1 – Mustang (Return)', note: 'BJ, Mum, Nani, Hasan Lalji' },
+          { name: 'Car 2 – Nissan (Return)', note: 'Papa, Ateqa Aunty, Hannah, Zainab Kaki, Motima' },
+          { name: 'Car 3 – Rental 9-seater (Return)', note: 'Motapapa, Fufijaan, Mamijaan, Masuma Govani, Govani Kid 1, Govani Kid 2, Tayaba Bai, Maryam Lalji, Zainab Lalji' },
+          { name: 'Car 4 – Nishat Masa (Return)', note: 'Nishat Masa, Khalajaan' },
         ],
-        passengers: 'Mum, Nani, Khalajaan, Fufijaan, Mamijaan, Ateqa Aunty, Hannah, Tayaba Bai (reverse), Hasan Lalji (reverse), Maryam Lalji (reverse), Motima, Zainab Kaki, Masuma Govani + 2 kids',
-        returnNote: 'Return passengers: BJ, Papa, Motapapa, Nishat Masa, Mum, Ateqa Aunty, Fufijaan, Khalajaan, Nani, Hannah, Mamijaan, Hasan Lalji, Zainab Kaki, Masuma Govani, Motima, Govani kids, Tayaba Bai, Maryam Lalji, Zainab Lalji',
+        passengers: 'Drive: BJ, Mum, Nani · Papa + Gifts · Motapapa, Fufijaan, Mamijaan, Motima, Ateqa Aunty, Hannah, Masuma Govani + kids · Nishat Masa, Khalajaan, Zainab Kaki',
+        returnNote: 'Return: BJ, Mum, Nani, Hasan Lalji · Papa, Ateqa Aunty, Hannah, Zainab Kaki, Motima · Motapapa, Fufijaan, Mamijaan, Masuma Govani + kids, Tayaba Bai, Maryam Lalji, Zainab Lalji · Nishat Masa, Khalajaan',
       },
       people: ['Mum','Nani','Khalajaan','Fufijaan','Mamijaan','Ateqa Aunty','Hannah','Motima','Zainab Kaki','Masuma Govani'],
       items: [
@@ -924,6 +1096,107 @@ const DATA = {
         'Sort food for men staying at home (Nana cooking / Muntazir Uncle — head of kitchen)',
         'Message Muhammedali Somji re: carpet collection in Arteon',
         'Confirm final car passenger allocations',
+      ],
+    },
+    {
+      id: 'wed-low-key',
+      name: 'Low Key Day — In-House Vanai & Mum\'s Evening',
+      date: 'Wednesday 22 April 2026',
+      dateISO: '2026-04-22',
+      venue: 'Somji Manzil, Milton Keynes',
+      venueAddress: 'Home',
+      type: 'Rest Day + Home Evening Programme',
+      publicStart: '6:45 PM (Vanai)',
+      internalArrival: 'Free morning — rest and travel',
+      departureAnchor: 'N/A — home day',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Recovery day. BJ Tafsir class. People travel and rest. In-house Vanai at 6:45 PM followed by Mum\'s evening programme. Get meat for Mess Up BBQ.',
+      overview: 'Intentionally low-key. The word used was "SLEEEEEP". People travel and do what they want during the day. BJ has Tafsir class. Dinner at home. In-house Vanai starts at 6:45 PM followed by the Mum programme. During the day: collect meat for the Mess Up BBQ on Friday.',
+      groomRole: 'Tafsir class. Rest. Be present for Vanai and Mum\'s evening.',
+      timeline: [
+        ['Morning', 'Free — rest and recovery'],
+        ['Morning', 'BJ Tafsir class'],
+        ['Daytime', 'People travel and do what they want'],
+        ['Daytime', 'Get meat and supplies for Mess Up BBQ (Friday)'],
+        ['Evening', 'Dinner at home'],
+        ['6:45 PM', 'In-house Vanai begins'],
+        ['After Vanai', 'Mum\'s evening programme'],
+      ],
+      transport: { route: 'N/A — home day', departureNote: 'Guests making their own way for daytime', cars: [], passengers: '', returnNote: '' },
+      people: ['Mum','Papa','BJ','Bha','MH','Dada','Nana','Nani','Fufijaan','Motapapa','Motima','Nishat Masa','Khalajaan','Tayaba Bai','Mamujaan','Mamijaan','Husayn','Ateqa Aunty','Muntazir Uncle','Hannah','Salman','Zayn','Fatim Sadak','Sakina Sadak','Abbas Sadak','AJ Sadak'],
+      items: ['Meat for Mess Up BBQ — collect today'],
+      vendors: [],
+      openQuestions: [
+        'Confirm full programme for Mum\'s evening after Vanai',
+        'Confirm Vanai details and who is leading',
+        'Confirm who is buying the meat and from where',
+      ],
+    },
+    {
+      id: 'mum-dua-night',
+      name: 'Mum Dua Night',
+      date: 'Thursday 23 April 2026',
+      dateISO: '2026-04-23',
+      venue: 'Somji Manzil, Milton Keynes',
+      venueAddress: 'Home — Ladies',
+      type: 'Ladies Programme at Home',
+      publicStart: '7:00 PM',
+      internalArrival: 'Ateqa Aunty arrives 5:00 PM to set up',
+      departureAnchor: 'N/A — home event',
+      status: 'upcoming',
+      statusLabel: 'Upcoming',
+      summary: 'Mum\'s Dua Night at home. Programme starts 7:00 PM. Ateqa Aunty arrives 5:00 PM. Quran by Hannah, Hadith-e-Kissa by Nani (if possible), Dua Kumayl by Fufijaan. Gents leave at 7:00 PM for Thursday Night Majlis.',
+      overview: 'Ladies programme at Somji Manzil. Ateqa Aunty arrives at 5:00 PM to help set up and sort the final order of the evening with Khudayjah. Maghrib at 20:12. Gents are out at the Thursday Night Majlis at the same time.',
+      groomRole: 'Gents depart at 7:00 PM for Thursday Night. Be present beforehand.',
+      timeline: [
+        ['5:00 PM', 'Ateqa Aunty arrives — helps set up and finalise order of evening'],
+        ['5:00 PM', 'Ateqa Aunty + Khudayjah to confirm final order of evening'],
+        ['7:00 PM', 'Programme begins'],
+        ['7:00 PM', 'Quran — Hannah'],
+        ['TBC', 'Hadith-e-Kissa — Nani (if possible)'],
+        ['TBC', 'Dua Kumayl — Fufijaan'],
+        ['20:12', 'Maghrib'],
+      ],
+      transport: { route: 'N/A — home event', departureNote: 'Gents depart 7:00 PM for Thursday Night Majlis at KSMC Stanmore', cars: [], passengers: '', returnNote: '' },
+      people: ['Mum','Nani','Khalajaan','Fufijaan','Ateqa Aunty','Motima','Mamijaan','Hannah','Khudayjah'],
+      items: [],
+      vendors: [],
+      openQuestions: [
+        'Ateqa Aunty and Khudayjah to confirm final order of evening before Thursday',
+        'Confirm Nani can read Hadith-e-Kissa',
+        'Confirm full ladies guest list for the evening',
+      ],
+    },
+    {
+      id: 'thursday-night',
+      name: 'Thursday Night Majlis (Gents)',
+      date: 'Thursday 23 April 2026',
+      dateISO: '2026-04-23',
+      venue: 'KSMC of London, Stanmore',
+      venueAddress: 'HA7 4LQ',
+      type: 'Gents — Casual Majlis',
+      publicStart: '7:00 PM (depart MK)',
+      internalArrival: 'Casual — no formal arrival time',
+      departureAnchor: 'Gents depart MK 7:00 PM',
+      status: 'upcoming',
+      statusLabel: 'Upcoming — Low Complexity',
+      summary: 'Very casual Thursday night at KSMC Stanmore. Gents depart MK at 7:00 PM while ladies run Mum Dua Night at home. No logistics required.',
+      overview: 'Very casual. No real event logistics required. Gents travel down to Stanmore mosque for Thursday night while the ladies programme runs at home. Standard Thursday programme.',
+      groomRole: 'Attend if going. No formal role.',
+      timeline: [
+        ['7:00 PM', 'Gents depart MK for Stanmore'],
+        ['TBC', 'Arrive KSMC Stanmore'],
+        ['TBC', 'Programme — casual'],
+        ['TBC', 'Return to MK'],
+      ],
+      transport: { route: 'Milton Keynes → KSMC Stanmore → Return MK', departureNote: 'Gents depart 7:00 PM. Ladies Dua Night runs in parallel at home.', cars: [], passengers: 'BJ, gents — TBC', returnNote: 'Return to MK post programme' },
+      people: ['BJ','Papa','Bha','MH','Salman','Zayn','Husayn'],
+      items: [],
+      vendors: [],
+      openQuestions: [
+        'Confirm who from gents is going Thursday night',
+        'Confirm cars / travel plan for Thursday night',
       ],
     },
     {
@@ -1024,14 +1297,14 @@ const DATA = {
         route: 'MK → First Look → KSMC Stanmore → Brocket Hall',
         departureNote: 'BJ + Shahid Abbas + Jabs depart 2:15 PM. Family departs 3:00 PM.',
         cars: [
-          { name: 'Car 1 – Mustang', note: 'BJ, Shahid Abbas, Jabs' },
-          { name: 'Car 2 – Nissan', note: 'Papa, Motapapa + family' },
-          { name: 'Car 3 – Rental 9-seater', note: 'Extended family' },
-          { name: 'Car 4 – Nishat Masa', note: 'Nishat Masa + passengers' },
-          { name: 'Car 5 – Mamujaan', note: 'Mamujaan + family' },
-          { name: 'Car 6 – Bengali Chacha (Muntazir Uncle)', note: 'Bengali Chacha + passengers' },
+          { name: 'Car 1 – Mustang', note: 'BJ, Shahid Abbas Jaffer' },
+          { name: 'Car 2 – Nissan', note: 'Papa, Mum' },
+          { name: 'Car 3 – Rental 9-seater', note: 'Motapapa, Motima, Fufijaan, Dada, Tayaba Bai, Hasan Lalji, Maryam Lalji, Zainab Lalji' },
+          { name: 'Car 4 – Nishat Masa', note: 'Nishat Masa, Khalajaan, Nana, Nani' },
+          { name: 'Car 5 – Mamujaan', note: 'Mamujaan, Mamijaan, Husayn' },
+          { name: 'Car 6 – Bengali Chacha', note: 'Muntazir Uncle, Ateqa Aunty, Zayn, Salman, Bha, Muhammedhaadi' },
         ],
-        passengers: 'BJ, Papa, Motapapa, Nishat Masa, Mamujaan, Muntazir Uncle, Shahid Abbas, Mum, Motima, Khalajaan, Mamijaan, Ateqa Aunty, Fufijaan, Nana, Husayn, Zayn, Dada, Nani, Salman, Tayaba Bai, Bha, Hasan Lalji, MH, Maryam Lalji, Zainab Lalji',
+        passengers: 'Car 1: BJ, Shahid Abbas Jaffer · Car 2: Papa, Mum · Car 3: Motapapa, Motima, Fufijaan, Dada, Tayaba Bai, Hasan Lalji, Maryam Lalji, Zainab Lalji · Car 4: Nishat Masa, Khalajaan, Nana, Nani · Car 5: Mamujaan, Mamijaan, Husayn · Car 6: Muntazir Uncle, Ateqa Aunty, Zayn, Salman, Bha, Muhammedhaadi',
         returnNote: 'Post ceremony → travel to Brocket Hall for overnight stay',
       },
       people: ['Shahid Abbas Jaffer (best man / timeline owner)','Jabs','BJ','Papa','Mum','MH','Bha','Dada','Nana','Nani'],
@@ -1085,13 +1358,13 @@ const DATA = {
         route: 'Brocket Hall (staying) → Reception on site',
         departureNote: 'Overnight from Nikah. Family may travel from Somji Manzil / other locations.',
         cars: [
-          { name: 'Car 2 – Nissan', note: '' },
-          { name: 'Car 3 – Rental 9-seater', note: '' },
-          { name: 'Car 4 – Nishat Masa', note: '' },
-          { name: 'Car 5 – Mamujaan', note: '' },
-          { name: 'Car 6 – Bengali Chacha', note: '' },
+          { name: 'Car 2 – Nissan', note: 'Mum, Bha, Muhammedhaadi, Hannah' },
+          { name: 'Car 3 – Rental 9-seater', note: 'Motapapa, Motima, Fufijaan, Dada, Tayaba Bai, Hasan Lalji, Maryam Lalji, Zainab Lalji' },
+          { name: 'Car 4 – Nishat Masa', note: 'Nishat Masa, Khalajaan, Nana, Nani' },
+          { name: 'Car 5 – Mamujaan', note: 'Mamujaan, Mamijaan, Husayn' },
+          { name: 'Car 6 – Bengali Chacha', note: 'Muntazir Uncle (Bengali Chacha), Ateqa Aunty, Papa' },
         ],
-        passengers: 'Mum, Motapapa, Nishat Masa, Mamujaan, Muntazir Uncle, Bha, Motima, Khalajaan, Mamijaan, Ateqa Aunty, MH, Fufijaan, Nana, Husayn, Papa, Hannah, Dada, Nani, Tayaba Bai, Hasan, Maryam, Zainab',
+        passengers: 'Car 1 (Mustang) not listed — BJ + Hanna in separate arrangement · Car 2: Mum, Bha, Muhammedhaadi, Hannah · Car 3: Motapapa, Motima, Fufijaan, Dada, Tayaba Bai, Hasan Lalji, Maryam Lalji, Zainab Lalji · Car 4: Nishat Masa, Khalajaan, Nana, Nani · Car 5: Mamujaan, Mamijaan, Husayn · Car 6: Muntazir Uncle, Ateqa Aunty, Papa',
         returnNote: 'Return to MK Monday morning before Family Breakfast',
       },
       people: ['Full family'],
@@ -1191,12 +1464,12 @@ const DATA = {
       departure: 'Leave MK 3:30 PM · ~75 min journey',
       status: 'partial', statusLabel: 'Partial',
       cars: [
-        { name: 'Car 1 – Seat', passengers: 'TBC' },
-        { name: 'Car 2 – Nissan', passengers: 'TBC' },
-        { name: 'Car 3 – LR', passengers: 'TBC' },
-        { name: 'Car 4 – TBC', passengers: 'TBC' },
+        { name: 'Car 1 – Seat', passengers: 'BJ, Bha, MH, Salman, Zayn' },
+        { name: 'Car 2 – Nissan', passengers: 'Papa, Dada, Nana, Motapapa' },
+        { name: 'Car 3 – LR', passengers: 'Muntazir Uncle, AJ Sadak, Hasnain Kaka' },
+        { name: 'Car 4 – TBC', passengers: 'Mamujaan, Husayn' },
       ],
-      notes: '14 men confirmed for this event. Final passenger groupings TBC.',
+      notes: '14 men across 4 cars. Car 4 name TBC — confirm vehicle.',
     },
     {
       event: 'Mehndi', date: '21 Apr', id: 'mehndi',
@@ -1204,10 +1477,14 @@ const DATA = {
       departure: 'Papa departs 4:00 PM with haul · Main convoy 5:00–5:15 PM',
       status: 'complex', statusLabel: 'Most Complex',
       cars: [
-        { name: 'Mustang', passengers: 'BJ, Papa' },
-        { name: 'Nissan', passengers: 'Fufijaan, Khalajaan, Nani + Gift' },
-        { name: 'Rental 9-seater', passengers: 'Motima, Ateqa Aunty, Hannah, Masuma Govani + kids' },
-        { name: 'Nishat Masa', passengers: 'Mamijaan, Zainab Kaki + Gift' },
+        { name: 'Car 1 – Mustang (Drive)', passengers: 'BJ, Mum, Nani' },
+        { name: 'Car 2 – Nissan (Drive)', passengers: 'Papa + Gifts (x4)' },
+        { name: 'Car 3 – Rental 9-seater (Drive)', passengers: 'Motapapa, Fufijaan, Mamijaan, Motima, Ateqa Aunty, Hannah, Masuma Govani, Govani Kid 1, Govani Kid 2' },
+        { name: 'Car 4 – Nishat Masa (Drive)', passengers: 'Nishat Masa, Khalajaan, Zainab Kaki' },
+        { name: 'Car 1 – Mustang (Return)', passengers: 'BJ, Mum, Nani, Hasan Lalji' },
+        { name: 'Car 2 – Nissan (Return)', passengers: 'Papa, Ateqa Aunty, Hannah, Zainab Kaki, Motima' },
+        { name: 'Car 3 – Rental 9-seater (Return)', passengers: 'Motapapa, Fufijaan, Mamijaan, Masuma Govani, Govani Kid 1, Govani Kid 2, Tayaba Bai, Maryam Lalji, Zainab Lalji' },
+        { name: 'Car 4 – Nishat Masa (Return)', passengers: 'Nishat Masa, Khalajaan' },
       ],
       notes: 'Split movement. Gents drop ladies, hold off-site at Tejani Airbnb (placeholder, TBC), return for pickup. Nana + Muntazir Uncle stay home as kitchen support.',
     },
@@ -1217,12 +1494,12 @@ const DATA = {
       departure: 'BJ + Shahid Abbas + Jabs: 2:15 PM · Family: 3:00 PM',
       status: 'defined', statusLabel: 'Defined',
       cars: [
-        { name: 'Mustang (Car 1)', passengers: 'BJ, Shahid Abbas, Jabs' },
-        { name: 'Nissan (Car 2)', passengers: 'Papa, Motapapa + TBC' },
-        { name: 'Rental 9-seater (Car 3)', passengers: 'Extended family' },
-        { name: 'Nishat Masa (Car 4)', passengers: 'Nishat Masa + TBC' },
-        { name: 'Mamujaan (Car 5)', passengers: 'Mamujaan + TBC' },
-        { name: 'Bengali Chacha (Car 6)', passengers: 'Muntazir Uncle + TBC' },
+        { name: 'Car 1 – Mustang', passengers: 'BJ, Shahid Abbas Jaffer' },
+        { name: 'Car 2 – Nissan', passengers: 'Papa, Mum' },
+        { name: 'Car 3 – Rental 9-seater', passengers: 'Motapapa, Motima, Fufijaan, Dada, Tayaba Bai, Hasan Lalji, Maryam Lalji, Zainab Lalji' },
+        { name: 'Car 4 – Nishat Masa', passengers: 'Nishat Masa, Khalajaan, Nana, Nani' },
+        { name: 'Car 5 – Mamujaan', passengers: 'Mamujaan, Mamijaan, Husayn' },
+        { name: 'Car 6 – Bengali Chacha', passengers: 'Muntazir Uncle, Ateqa Aunty, Zayn, Salman, Bha, Muhammedhaadi' },
       ],
       notes: 'Groom route: MK → First Look 3:30–4:00 PM → mosque 4:15 PM. Weekend bags must all be in cars before leaving MK. Post Nikah → Brocket Hall overnight.',
     },
@@ -1306,6 +1583,75 @@ const DATA = {
     'House rule on Nikah morning: only BJ, best man (Shahid Abbas), Jabs, MH, Papa, Mum, grandparents in the house.',
     'Hard stop rule: no new tasks after 2:40 PM on Nikah day.',
   ],
+
+  // ── Arrival dates for master timeline ──────────────────────
+  arrivals: [
+    { dateISO: '2026-04-18', dateLabel: 'Sat 18 Apr', who: 'Motapapa (AM shift) · Fufijaan (post-shift)', note: 'Staying at Milburn Retreat Airbnb, Centre MK. Maisam is primary driver option for the van. Muntazir Uncle as backup. BJ to pick them up for dinner at home. Ateqa Aunty cooking.' },
+    { dateISO: '2026-04-20', dateLabel: 'Mon 20 Apr', who: 'Khalajaan · Nishat Masa', note: 'Arriving during the day. Gift Packing Session starts 6:00 PM.' },
+    { dateISO: '2026-04-23', dateLabel: 'Thu 23 Apr', who: 'Ateqa Aunty · 5:00 PM', note: 'Arrives to prepare for Mum Dua Night and final pre-wedding setup.' },
+  ],
+
+  // ── Per-person tasks ────────────────────────────────────────
+  personTasks: {
+    'Papa': [
+      { event: 'Mehndi — 21 Apr', task: 'Depart MK at 4:00 PM with haul truck — desserts, gifts and equipment', priority: 'high' },
+      { event: 'Prep', task: 'Check material and cloth for gift trays before gift packing session', priority: 'medium' },
+      { event: 'Nikah — 25 Apr', task: 'Family convoy lead — depart MK 3:00 PM', priority: 'high' },
+    ],
+    'Mum': [
+      { event: 'Prep', task: 'Receive stationery list from Ateqa Aunty and action before gift packing session', priority: 'medium' },
+      { event: 'Prep', task: 'Sort fruit for gift packing session (Mon 20 Apr)', priority: 'low' },
+    ],
+    'Bha': [
+      { event: 'Nikah — 25 Apr', task: 'Execution support — packing, loading, house control on Nikah morning', priority: 'high' },
+    ],
+    'Mohammed Haadi (MH)': [
+      { event: 'Nikah — 25 Apr', task: 'Key approved house presence on Nikah morning', priority: 'high' },
+      { event: 'Nikah — 25 Apr', task: 'Execution support — packing, loading, house control', priority: 'high' },
+    ],
+    'Shahid Abbas Jaffer': [
+      { event: 'Nikah — 25 Apr', task: 'Own the full Nikah day timeline — you are the clock', priority: 'high' },
+      { event: 'Nikah — 25 Apr', task: 'Arrive at Somji Manzil by 9:00 AM on Nikah morning', priority: 'high' },
+      { event: 'Nikah — 25 Apr', task: 'Depart MK with BJ at 2:15 PM sharp', priority: 'high' },
+      { event: 'Mess Up — 24 Apr', task: 'Lead guest list and evening flow for the Mess Up', priority: 'high' },
+    ],
+    'Jabs': [
+      { event: 'Nikah — 25 Apr', task: 'Arrive at Somji Manzil by 9:00 AM on Nikah morning', priority: 'high' },
+      { event: 'Nikah — 25 Apr', task: 'Collect envelopes and keep safe — also inform MT', priority: 'high' },
+      { event: 'Nikah — 25 Apr', task: 'Depart MK with BJ and Shahid Abbas at 2:15 PM', priority: 'high' },
+    ],
+    'Shahid Ali Khaki': [
+      { event: 'Dua Night — 19 Apr', task: 'AV lead at SJ Clubhouse Harefield — set up and run throughout', priority: 'high' },
+      { event: 'Mehndi — 21 Apr', task: 'AV setup at Shenley Club at 4:00 PM — screen, PowerPoint, playback, wireless mic', priority: 'high' },
+      { event: 'Mehndi — 21 Apr', task: 'Train ladies to run AV themselves before you leave', priority: 'high' },
+    ],
+    'Ateqa Aunty': [
+      { event: 'Prep', task: 'Send stationery list to Mum for gift packing session (before Mon 20 Apr)', priority: 'high' },
+      { event: 'Nikah — 25 Apr', task: 'Confirm makeup timings and send through to Somji side', priority: 'high' },
+      { event: 'Thu 23 Apr', task: 'Arrive Somji Manzil by 5:00 PM', priority: 'medium' },
+      { event: 'Mum Dua Night — 23 Apr', task: 'Confirm final order of evening with Khudayjah', priority: 'medium' },
+    ],
+    'Khudayjah': [
+      { event: 'Mum Dua Night — 23 Apr', task: 'Confirm final order of evening with Ateqa Aunty', priority: 'medium' },
+    ],
+    'Nana': [
+      { event: 'Mehndi — 21 Apr', task: 'Stay home — head of kitchen for men not travelling to Mehndi', priority: 'medium' },
+      { event: 'Mess Up — 24 Apr', task: 'Make potato salad for the BBQ', priority: 'medium' },
+    ],
+    'Muntazir Uncle (Bengali Chacha)': [
+      { event: 'Mehndi — 21 Apr', task: 'Head of kitchen for men staying home during Mehndi', priority: 'medium' },
+    ],
+    'Nishat Masa': [
+      { event: 'Arriving', task: 'Arrive MK Monday 20 April with Khalajaan', priority: 'low' },
+      { event: 'Mehndi — 21 Apr', task: 'Drive Car 4 (Nishat Masa) — Khalajaan and Zainab Kaki', priority: 'medium' },
+    ],
+    'Fufijaan': [
+      { event: 'Mum Dua Night — 23 Apr', task: 'Read Dua Kumayl at evening programme', priority: 'medium' },
+    ],
+    'Nani': [
+      { event: 'Mum Dua Night — 23 Apr', task: 'Read Hadith-e-Kissa if possible', priority: 'low' },
+    ],
+  },
 };
 
 /* ============================================================
@@ -1496,24 +1842,62 @@ function renderDashboard() {
    RENDER: MASTER TIMELINE
    ============================================================ */
 function renderTimeline() {
-  document.getElementById('page-timeline').innerHTML = `
-    <p class="page-intro">Chronological overview of the full wedding week. Dates, venues, and internal timings at a glance.</p>
-    <div class="card">
-      <h2 class="card-title">Wedding Week — Master Timeline</h2>
-      ${DATA.events.map((e, i) => `
+  // Merge events and arrivals into one sorted list
+  const entries = [];
+  DATA.events.forEach(e => entries.push({ type: 'event', dateISO: e.dateISO, data: e }));
+  DATA.arrivals.forEach(a => entries.push({ type: 'arrival', dateISO: a.dateISO, data: a }));
+  // Sort by date; arrivals come before events on same date
+  entries.sort((a,b) => {
+    const dateCmp = a.dateISO.localeCompare(b.dateISO);
+    if (dateCmp !== 0) return dateCmp;
+    if (a.type === 'arrival' && b.type !== 'arrival') return -1;
+    if (b.type === 'arrival' && a.type !== 'arrival') return 1;
+    return 0;
+  });
+
+  const rows = entries.map((entry, i) => {
+    if (entry.type === 'arrival') {
+      const a = entry.data;
+      return `
+        <div class="arrival-row" style="${i===0?'padding-top:0':''}">
+          <div>
+            <div class="tl-time">${a.dateLabel}</div>
+            <div style="margin-top:4px"><span class="arrival-badge">Arrival</span></div>
+          </div>
+          <div class="tl-content">
+            <strong style="color:var(--sage-deep)">✈ ${a.who}</strong>
+            <div class="small muted" style="margin-top:3px">${a.note}</div>
+          </div>
+        </div>
+      `;
+    } else {
+      const e = entry.data;
+      return `
         <div class="tl-row" style="${i===0?'padding-top:0':''}">
           <div class="tl-time">${e.date.split(' ').slice(0,3).join(' ')}</div>
           <div class="tl-content">
             <strong>${e.name}</strong>
             <div class="small muted">${e.venue}${e.venueAddress ? ' · ' + e.venueAddress : ''}</div>
             <div class="small" style="margin-top:4px">
-              Public: <strong>${e.publicStart}</strong> &nbsp;·&nbsp; Internal arrival: <strong>${e.internalArrival}</strong>
+              Public: <strong>${e.publicStart}</strong> &nbsp;·&nbsp; Internal: <strong>${e.internalArrival}</strong>
             </div>
             ${e.departureAnchor && e.departureAnchor !== 'N/A — home event' ? `<div class="small muted" style="margin-top:2px">Departure: ${e.departureAnchor}</div>` : ''}
             <div style="margin-top:6px">${['tbc','placeholder'].some(s=>e.statusLabel.toLowerCase().includes(s))?`<span class="badge warning">${e.statusLabel}</span>`:`<span class="badge">${e.statusLabel}</span>`}</div>
           </div>
         </div>
-      `).join('')}
+      `;
+    }
+  }).join('');
+
+  document.getElementById('page-timeline').innerHTML = `
+    <p class="page-intro">Chronological overview of the full wedding week — events and key arrivals merged into one view.</p>
+    <div class="card">
+      <h2 class="card-title">Wedding Week — Master Timeline</h2>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:18px;font-size:12px">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--sage);margin-right:5px;vertical-align:middle"></span>Event</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(138,163,141,0.25);margin-right:5px;vertical-align:middle"></span>Arrival</span>
+      </div>
+      ${rows}
     </div>
   `;
 }
@@ -1666,12 +2050,127 @@ function collapseAll() {
 }
 
 /* ============================================================
+   PERSON CAR LOOKUP
+   ============================================================ */
+function getPersonCars(name) {
+  const results = [];
+  DATA.events.forEach(e => {
+    if (!e.transport || !e.transport.cars) return;
+    e.transport.cars.forEach(car => {
+      const note = (car.note || car.passengers || '');
+      // Match whole word / name segment (case-insensitive)
+      const nameShort = name.split(' ')[0]; // use first name for fuzzy match
+      if (note.toLowerCase().includes(name.toLowerCase()) ||
+          note.toLowerCase().includes(nameShort.toLowerCase())) {
+        results.push({ event: e.name, date: e.date.split(' ').slice(0,3).join(' '), car: car.name, passengers: note });
+      }
+    });
+  });
+  // Deduplicate by event+car
+  const seen = new Set();
+  return results.filter(r => {
+    const key = r.event + r.car;
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+}
+
+/* ============================================================
+   PERSON DETAIL MODAL
+   ============================================================ */
+function showPersonDetail(name) {
+  const person = DATA.people.find(p => p.name === name);
+  if (!person) return;
+
+  const tasks = DATA.personTasks[name] || [];
+  const cars  = getPersonCars(name);
+  const hasTasks = tasks.length > 0;
+  const hasCars  = cars.length > 0;
+
+  // Header
+  document.getElementById('person-modal-header').innerHTML = `
+    <div class="modal-name">${person.name}</div>
+    <div class="modal-role">${person.role}</div>
+    <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px">
+      ${person.tags.map(t => `<span class="badge">${t}</span>`).join('')}
+    </div>
+    ${person.detail ? `<div style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6">${person.detail}</div>` : ''}
+  `;
+
+  // Body
+  let body = '';
+
+  // Tasks section
+  body += `<div class="modal-section">
+    <div class="modal-section-title">Tasks & Responsibilities ${hasTasks ? `<span style="color:var(--danger)">${tasks.length} item${tasks.length>1?'s':''}</span>` : ''}</div>`;
+  if (hasTasks) {
+    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    const sorted = [...tasks].sort((a,b) => (priorityOrder[a.priority]||1) - (priorityOrder[b.priority]||1));
+    body += sorted.map(t => `
+      <div class="task-row">
+        <div class="task-priority priority-${t.priority}"></div>
+        <div>
+          <div class="task-event-label">${t.event}</div>
+          <div>${t.task}</div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    body += `<div style="font-size:13px;color:var(--muted);padding:8px 0">No specific tasks assigned yet for this person.</div>`;
+  }
+  body += `</div>`;
+
+  // Priority legend
+  if (hasTasks) {
+    body += `<div style="display:flex;gap:14px;margin-bottom:24px;font-size:12px;color:var(--muted)">
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--danger);margin-right:5px"></span>High priority</span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:5px"></span>Medium</span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--sage);margin-right:5px"></span>Low</span>
+    </div>`;
+  }
+
+  // Car assignments section
+  body += `<div class="modal-section">
+    <div class="modal-section-title">Car Assignments ${hasCars ? `<span style="color:var(--sage-deep)">${cars.length} event${cars.length>1?'s':''}</span>` : ''}</div>`;
+  if (hasCars) {
+    body += cars.map(c => `
+      <div class="car-assignment-row">
+        <span style="font-size:18px">🚗</span>
+        <div style="flex:1">
+          <div class="car-event-name">${c.event} <span class="car-detail">· ${c.date}</span></div>
+          <div class="car-detail" style="margin-top:2px"><strong>${c.car}</strong></div>
+          <div class="car-detail" style="margin-top:2px">${c.passengers}</div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    body += `<div style="font-size:13px;color:var(--muted);padding:8px 0">No car assignment found — may be making own way or not attending driving events.</div>`;
+  }
+  body += `</div>`;
+
+  document.getElementById('person-modal-body').innerHTML = body;
+  document.getElementById('person-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePersonModal(e) {
+  if (e.target === document.getElementById('person-modal')) {
+    closePersonModalBtn();
+  }
+}
+function closePersonModalBtn() {
+  document.getElementById('person-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePersonModalBtn();
+});
+
+/* ============================================================
    RENDER: PEOPLE
    ============================================================ */
 function renderPeople() {
   const allTags = [...new Set(DATA.people.flatMap(p => p.tags))].sort();
-
-  let activeFilter = 'all';
 
   const filterBar = `
     <div class="filter-bar" id="people-filters">
@@ -1680,17 +2179,26 @@ function renderPeople() {
     </div>
   `;
 
-  const cards = DATA.people.map(p => `
-    <div class="person-card" data-tags="${p.tags.join(',')}">
-      <div class="person-name">${p.name}</div>
-      <div class="person-role">${p.role}</div>
-      ${p.detail ? `<div class="person-detail">${p.detail}</div>` : ''}
-      <div class="person-tags">${p.tags.map(t => `<span class="badge">${t}</span>`).join('')}</div>
-    </div>
-  `).join('');
+  const cards = DATA.people.map(p => {
+    const hasTasks = !!(DATA.personTasks[p.name] && DATA.personTasks[p.name].length > 0);
+    const hasCars  = getPersonCars(p.name).length > 0;
+    return `
+      <div class="person-card" data-tags="${p.tags.join(',')}" onclick="showPersonDetail('${p.name.replace(/'/g, "\\'")}')">
+        <div class="person-name">${p.name}</div>
+        <div class="person-role">${p.role}</div>
+        ${p.detail ? `<div class="person-detail">${p.detail}</div>` : ''}
+        <div class="person-tags">${p.tags.map(t => `<span class="badge">${t}</span>`).join('')}</div>
+        <div class="person-card-hint" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          ${hasTasks ? `<span style="color:var(--danger)">● ${DATA.personTasks[p.name].length} task${DATA.personTasks[p.name].length>1?'s':''}</span>` : ''}
+          ${hasCars  ? `<span style="color:var(--sage-deep)">🚗 Car assigned</span>` : ''}
+          <span style="color:var(--muted);font-weight:400">Tap for dashboard →</span>
+        </div>
+      </div>
+    `;
+  }).join('');
 
   document.getElementById('page-people').innerHTML = `
-    <p class="page-intro">All people across the wedding week. Filter by role or category. Cards are editable — relationship details will be refined later.</p>
+    <p class="page-intro">Tap any person to open their individual dashboard — tasks, responsibilities and car assignments per event. Filter by tag to narrow down.</p>
     ${filterBar}
     <div class="people-grid" id="people-grid">${cards}</div>
   `;
